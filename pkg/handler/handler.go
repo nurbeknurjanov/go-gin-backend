@@ -1,0 +1,69 @@
+package handler
+
+import (
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
+)
+
+type Handler struct {
+	services *service.Services
+}
+
+func NewHandler(services *service.Services) *Handler {
+	return &Handler{services: services}
+}
+
+func (h *Handler) InitRoutes() *gin.Engine {
+	router := gin.New()
+
+	router.StaticFS("/public", gin.Dir("public/upload", false))
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"*"}
+	//corsConfig.AllowOrigins = []string{"http://localhost:3000"}
+	//corsConfig.AllowCredentials = true
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "X-Access-Token", "X-Refresh-Token"}
+	router.Use(cors.New(corsConfig))
+
+	router.POST("/auth/login", h.login)
+	router.GET("/auth/get-access-token", h.hasRefreshToken, h.getAccessToken)
+	router.POST("/auth/test", h.test)
+
+	users := router.Group("/users", h.authorizedUser)
+	{
+		users.GET("", h.listUsers)
+		users.POST("", h.createUser)
+		users.GET("/:id", h.viewUser)
+		users.PUT("/:id", h.updateUser)
+		users.DELETE("/:id", h.deleteUser)
+
+		users.PUT("/:id/change-password", h.changeUserPassword)
+	}
+
+	profile := router.Group("/profile", h.authorizedUser)
+	{
+		profile.GET("", h.profile)
+		profile.POST("", h.profileUpdate)
+		profile.PUT("/change-password", h.profileChangePassword)
+	}
+
+	products := router.Group("/products")
+	{
+		products.GET("", h.listProducts)
+		products.POST("", h.authorizedUser, h.createProduct)
+		products.GET("/:id", h.viewProduct)
+		products.PUT("/:id", h.authorizedUser, h.updateProduct)
+		products.DELETE("/:id", h.authorizedUser, h.deleteProduct)
+	}
+
+	files := router.Group("/files", h.authorizedUser)
+	{
+		files.POST("/upload", h.createFile)
+		files.GET("", h.listFiles)
+		files.DELETE("/:id", h.deleteFile)
+		files.GET("/:id", h.viewFile)
+	}
+
+	return router
+}
