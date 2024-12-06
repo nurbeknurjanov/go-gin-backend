@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
 	"github.com/sirupsen/logrus"
@@ -15,26 +16,8 @@ import (
 )
 
 func main() {
-	/*u := models.User{}
-	u.ID = 1
-	u.Name = "Alan"
-	u.Email = "Alan@mail.ru"*/
-
-	/*oe := reflect.ValueOf(&u).Elem()
-	//o := reflect.ValueOf(u) //поможет только читать, но не записывать
-	fv := oe.FieldByName("Email")
-
-	fv.Set(reflect.ValueOf("Changed@mail.ru").Convert(fv.Type()))
-	//fv.SetString("Changed@mail.ru")
-	fmt.Println("fv value", fv.Interface())*/
-
-	/*o := reflect.ValueOf(u)
-	for i := 0; i < o.NumField(); i++ {
-		fmt.Println(o.Type().Field(i).Name, o.Field(i).Interface())
-	}*/
-
-	/*fs := http.FileServer(http.Dir("public/upload"))
-	http.Handle("/public", fs)*/
+	helpers.TestFunc()
+	return
 
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 

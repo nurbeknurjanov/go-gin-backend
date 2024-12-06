@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
 	"net/http"
 )
@@ -42,7 +43,7 @@ func (h *Handler) getAccessToken(c *gin.Context) {
 }
 
 func (h *Handler) test(c *gin.Context) {
-	var input *models.Test
+	var input *helpers.Test
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
