@@ -8,8 +8,14 @@ type Test struct {
 	Age  *string `json:"age"`
 }
 
+func ChangeArr(arr [3]int) {
+	arr[0] = arr[0] + 10
+}
 func TestFunc() {
-	fmt.Println("TestFunc")
+	arr := [...]int{1, 2, 3}
+	ChangeArr(arr)
+
+	fmt.Println("TestFunc", arr)
 }
 
 /*u := models.User{}
