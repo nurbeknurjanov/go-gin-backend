@@ -16,8 +16,8 @@ func Say(ch chan int) {
 	ch <- 10
 	fmt.Println("3.5 Say middle") // ???? why ??? должно было быть 4.5
 	//Потому что скопом пихаются все значения в поток, разом функция выполняется
-	ch <- 20 //Но 7 не выходит, потому что ch он как await
-	fmt.Println("7 Say end")
+	ch <- 20                 //Но 7 не выходит, потому что ch он как await
+	fmt.Println("7 Say end") //or 6 if  fmt.Println("no third", <-ch)
 }
 
 func GoRun() {
@@ -30,8 +30,8 @@ func GoRun() {
 	fmt.Println("4 first", <-ch)
 	fmt.Println("5 second", <-ch)
 	//fun 6 say end
-	//fmt.Println("no third", <-ch)
-	fmt.Println("6 end main")
+	fmt.Println("no third", <-ch)
+	fmt.Println("6 end main") // no if third <-
 	/*for index, value range <-ch {
 
 	}*/
