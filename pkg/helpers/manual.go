@@ -1,8 +1,6 @@
 package helpers
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Test struct {
 	ID   *int    `json:"id"`
@@ -48,16 +46,37 @@ go - async
 	time.Sleep(2 * time.Second)
 }*/
 
-func Sum(n int, ch chan int) {
+/*
+	func Sum(n int, ch chan<- int) {
+		ch <- n * n
+	}
+
+	func GoRun() {
+		ch := make(chan int)
+		go Sum(3, ch)
+		fmt.Println(<-ch)
+	}
+*/
+/*func Sum(ch chan int) {
+	n := <-ch
 	ch <- n * n
 }
 func GoRun() {
 	ch := make(chan int)
-	go Sum(10, ch)
+	go Sum(ch) //без этого зависнет
+	ch <- 3 //так как не сможет записать
+	fmt.Println("result", <-ch)
+}*/
 
-	fmt.Println(<-ch)
-
-	//time.Sleep(2 * time.Second)
+func createCh(n int) chan int {
+	ch := make(chan int)
+	go func() {
+		ch <- n
+	}()
+	return ch
+}
+func GoRun() {
+	fmt.Println("result", <-createCh(30))
 }
 
 /*u := models.User{}
