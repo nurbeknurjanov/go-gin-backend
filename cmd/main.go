@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	helpers.GoRun()
+	helpers.RunPanic()
 	return
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
