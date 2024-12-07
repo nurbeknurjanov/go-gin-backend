@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"fmt"
-	"time"
 )
 
 type Test struct {
@@ -11,33 +10,67 @@ type Test struct {
 	Age  *string `json:"age"`
 }
 
-func Say(ch chan int) {
-	fmt.Println("3 Say start")
+/*
+go - async
+<- назначение это как resolve
+<- чтение await
+*/
+
+func Say1(ch chan int) {
 	ch <- 10
-	fmt.Println("3.5 Say middle") // ???? why ??? должно было быть 4.5
-	//Потому что скопом пихаются все значения в поток, разом функция выполняется
-	ch <- 20                 //Но 7 не выходит, потому что ch он как await
-	fmt.Println("7 Say end") //or 6 if  fmt.Println("no third", <-ch)
+	fmt.Println("1 input")
+	ch <- 20
+	fmt.Println("2 input")
 }
 
 func GoRun() {
 	ch := make(chan int)
-	fmt.Println("1 start main")
-	go Say(ch)
-	fmt.Println("2 middle main")
+	go Say1(ch)
 	//fun 3 say start
 	//fun 3.5 say middle despite ch
-	fmt.Println("4 first", <-ch)
-	fmt.Println("5 second", <-ch)
-	//fun 6 say end
-	fmt.Println("no third", <-ch)
-	fmt.Println("6 end main") // no if third <-
-	/*for index, value range <-ch {
+	fmt.Println("1 output", <-ch)
+	fmt.Println("2 second", <-ch)
+}
 
-	}*/
+/*func say(ch chan int) {
+	ch <- 1
+	fmt.Println("After 1")
+	ch <- 2
+	fmt.Println("After 2")
+	ch <- 3
+	fmt.Println("After 3")
+	ch <- 4
+	fmt.Println("After 4")
+	ch <- 5
+	fmt.Println("After 5")
+	ch <- 6
+	fmt.Println("After 6")
+	ch <- 7
+	fmt.Println("After 7")
+	ch <- 8
+	fmt.Println("After 8")
+	ch <- 9
+	fmt.Println("After 9")
+	ch <- 10
+	fmt.Println("After 10")
+}
+
+func GoRun() {
+	ch := make(chan int)
+	go say(ch)
+	fmt.Println("el1", <-ch)
+	fmt.Println("el2", <-ch)
+	fmt.Println("el3", <-ch)
+	fmt.Println("el4", <-ch)
+	fmt.Println("el5", <-ch)
+	fmt.Println("el6", <-ch)
+	fmt.Println("el7", <-ch)
+	fmt.Println("el8", <-ch)
+	fmt.Println("el9", <-ch)
+	fmt.Println("el10", <-ch)
 
 	time.Sleep(2 * time.Second)
-}
+}*/
 
 /*u := models.User{}
 u.ID = 1
