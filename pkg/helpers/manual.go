@@ -80,7 +80,7 @@ func GoRun() {
 }
 */
 
-func divide(a, b int) {
+/*func divide(a, b int) {
 	defer func() {
 		fmt.Println("Error happened")
 		if err := recover(); err != nil {
@@ -90,10 +90,59 @@ func divide(a, b int) {
 	fmt.Println(a / b)        //error happens
 	fmt.Println("Not called") //that's why this is not called
 }
-
 func RunPanic() {
 	divide(1, 0)
 	fmt.Println("Continue")
+}*/
+
+/*func Run() {
+	a := []int{1, 2, 3}
+	b := a[:2]
+	b = append(b, 4)
+	fmt.Println(a)//1,2,4
+}*/
+
+/*type Foo struct{}
+func (*Foo) A() {}
+func (*Foo) B() {}
+func (*Foo) C() {}
+type AB interface {
+	A()
+	B()
+}
+type BC interface {
+	B()
+	C()
+}
+type GG struct {
+}
+func Run() {
+	var a AB = &Foo{}
+	var c BC = a.(BC)//works
+}*/
+
+/*type X struct {
+	V int
+}
+func Run() {
+	x := X{1}
+	//x := new(X)
+	defer fmt.Println(x.V) //1 new or without pointer
+	x.V = 2
+}*/
+
+type X struct {
+	V int
+}
+
+// x *X does matter
+func (x X) S() {
+	fmt.Println(x.V)
+}
+func Run() {
+	x := X{1}   // or &X{1}, no matter
+	defer x.S() //выведет 1, потому что так запомнит переменную x.S
+	x.V = 2
 }
 
 /*u := models.User{}
