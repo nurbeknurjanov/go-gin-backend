@@ -124,30 +124,40 @@ func Run() {
 /*type X struct {
 	V int
 }
-func Run() {
-	x := X{1}
-	//x := new(X)
-	defer fmt.Println(x.V) //1 new or without pointer
-	x.V = 2
-}*/
-
-type X struct {
-	V int
-}
-
 // x *X does matter
 func (x X) S() {
 	fmt.Println(x.V)
 }
-func Run() {
-	x := X{1} // or &X{1}, no matter
-	//defer x.S() //выведет 1, потому что так запомнит переменную x.S
-	defer func() {
-		x.S()
-	}()
+func RunS() {
+	x := X{1}   // or &X{1}, no matter
+	defer x.S() //запомнит все свойства x
+	defer func() { 	x.S() }()
 
 	//return можем так манипулировать
 	x.V = 2
+}*/
+
+/*
+	func f2() (x int) {
+		defer func() {
+			x += 90
+		}()
+		x = 1
+		return
+	}
+*/
+
+/*func Run() {
+	a := 1
+	//defer fmt.Println(a)//запоминает аргументы, запомнит и выведет 1
+	defer func() { //тут аргументов нет, во внутрь не лезет
+		fmt.Println(a)
+	}()
+	a++
+}*/
+
+func Run() {
+	fmt.Println("Hello World")
 }
 
 /*u := models.User{}
