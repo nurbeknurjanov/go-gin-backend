@@ -16,9 +16,8 @@ import (
 )
 
 func main() {
-	helpers.TestFunc()
+	helpers.GoRun()
 	return
-
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
 	if err := initConfig(); err != nil {

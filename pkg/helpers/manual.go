@@ -1,6 +1,9 @@
 package helpers
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Test struct {
 	ID   *int    `json:"id"`
@@ -8,14 +11,31 @@ type Test struct {
 	Age  *string `json:"age"`
 }
 
-func ChangeArr(arr [3]int) {
-	arr[0] = arr[0] + 10
+func Say(ch chan int) {
+	fmt.Println("3 Say start")
+	ch <- 10
+	fmt.Println("3.5 Say middle") // ???? why ??? должно было быть 4.5
+	//Потому что скопом пихаются все значения в поток, разом функция выполняется
+	ch <- 20 //Но 7 не выходит, потому что ch он как await
+	fmt.Println("7 Say end")
 }
-func TestFunc() {
-	arr := [...]int{1, 2, 3}
-	ChangeArr(arr)
 
-	fmt.Println("TestFunc", arr)
+func GoRun() {
+	ch := make(chan int)
+	fmt.Println("1 start main")
+	go Say(ch)
+	fmt.Println("2 middle main")
+	//fun 3 say start
+	fmt.Println("4 first", <-ch)
+	fmt.Println("5 second", <-ch)
+	//fun 6 say end
+	//fmt.Println("no third", <-ch)
+	fmt.Println("6 end main")
+	/*for index, value range <-ch {
+
+	}*/
+
+	time.Sleep(2 * time.Second)
 }
 
 /*u := models.User{}
