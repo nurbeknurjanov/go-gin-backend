@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"fmt"
-	"time"
 )
 
 type Test struct {
@@ -49,18 +48,16 @@ go - async
 	time.Sleep(2 * time.Second)
 }*/
 
+func Sum(n int, ch chan int) {
+	ch <- n * n
+}
 func GoRun() {
 	ch := make(chan int)
-	go func() {
-		ch <- 1
-		fmt.Println("After 1")
-		ch <- 2
-		fmt.Println("After 2")
-		ch <- 3
-		fmt.Println("After 3")
-	}()
+	go Sum(10, ch)
 
-	time.Sleep(2 * time.Second)
+	fmt.Println(<-ch)
+
+	//time.Sleep(2 * time.Second)
 }
 
 /*u := models.User{}
