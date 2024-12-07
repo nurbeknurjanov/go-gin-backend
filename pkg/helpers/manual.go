@@ -140,8 +140,13 @@ func (x X) S() {
 	fmt.Println(x.V)
 }
 func Run() {
-	x := X{1}   // or &X{1}, no matter
-	defer x.S() //выведет 1, потому что так запомнит переменную x.S
+	x := X{1} // or &X{1}, no matter
+	//defer x.S() //выведет 1, потому что так запомнит переменную x.S
+	defer func() {
+		x.S()
+	}()
+
+	//return можем так манипулировать
 	x.V = 2
 }
 
