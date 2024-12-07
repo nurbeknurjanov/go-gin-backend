@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"fmt"
+	"time"
 )
 
 type Test struct {
@@ -16,61 +17,51 @@ go - async
 <- чтение await
 */
 
-func Say1(ch chan int) {
-	ch <- 10
-	fmt.Println("1 input")
-	ch <- 20
-	fmt.Println("2 input")
-}
-
-func GoRun() {
+/*func GoRun() {
 	ch := make(chan int)
-	go Say1(ch)
-	//fun 3 say start
-	//fun 3.5 say middle despite ch
+	go func(ch chan int) {
+		ch <- 10
+		fmt.Println("1 input")
+		ch <- 20
+		fmt.Println("2 input")
+	}(ch)
 	fmt.Println("1 output", <-ch)
 	fmt.Println("2 second", <-ch)
-}
+}*/
 
-/*func say(ch chan int) {
-	ch <- 1
-	fmt.Println("After 1")
-	ch <- 2
-	fmt.Println("After 2")
-	ch <- 3
-	fmt.Println("After 3")
-	ch <- 4
-	fmt.Println("After 4")
-	ch <- 5
-	fmt.Println("After 5")
-	ch <- 6
-	fmt.Println("After 6")
-	ch <- 7
-	fmt.Println("After 7")
-	ch <- 8
-	fmt.Println("After 8")
-	ch <- 9
-	fmt.Println("After 9")
-	ch <- 10
-	fmt.Println("After 10")
-}
-
-func GoRun() {
+/*func GoRun() {
 	ch := make(chan int)
-	go say(ch)
+	go func() {
+		ch <- 1
+		fmt.Println("After 1")
+		ch <- 2
+		fmt.Println("After 2")
+		ch <- 3
+		fmt.Println("After 3")
+	}()
 	fmt.Println("el1", <-ch)
+	fmt.Println("After el1")
 	fmt.Println("el2", <-ch)
+	fmt.Println("After el2")
 	fmt.Println("el3", <-ch)
-	fmt.Println("el4", <-ch)
-	fmt.Println("el5", <-ch)
-	fmt.Println("el6", <-ch)
-	fmt.Println("el7", <-ch)
-	fmt.Println("el8", <-ch)
-	fmt.Println("el9", <-ch)
-	fmt.Println("el10", <-ch)
+	fmt.Println("After el3")
 
 	time.Sleep(2 * time.Second)
 }*/
+
+func GoRun() {
+	ch := make(chan int)
+	go func() {
+		ch <- 1
+		fmt.Println("After 1")
+		ch <- 2
+		fmt.Println("After 2")
+		ch <- 3
+		fmt.Println("After 3")
+	}()
+
+	time.Sleep(2 * time.Second)
+}
 
 /*u := models.User{}
 u.ID = 1
