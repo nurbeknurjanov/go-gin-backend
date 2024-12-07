@@ -26,6 +26,7 @@ func GoRun() {
 	go Say(ch)
 	fmt.Println("2 middle main")
 	//fun 3 say start
+	//fun 3.5 say middle despite ch
 	fmt.Println("4 first", <-ch)
 	fmt.Println("5 second", <-ch)
 	//fun 6 say end
