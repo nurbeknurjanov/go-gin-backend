@@ -104,14 +104,35 @@ func Run() {
 	}
 }*/
 
+/*func goOne(ch chan string) {
+	ch <- "From goOne goroutine"
+}
+func goTwo(ch chan string) {
+	ch <- "From goTwo goroutine"
+}
+func RunTest() {
+	ch1 := make(chan string)
+	ch2 := make(chan string)
+
+	go goOne(ch1)
+	go goTwo(ch2)
+
+	select {
+	case msg11 := <-ch1:
+		fmt.Println("msg11", msg11)
+	case msg22 := <-ch2: //stronger
+		fmt.Println("msg22", msg22)
+	}
+}*/
+
 func fibonacci(c, quit chan int) {
 	x, y := 0, 1
 	for {
 		select {
 		case c <- x:
 			x, y = y, x+y
-		case <-quit:
-			fmt.Println("quit")
+		case q := <-quit:
+			fmt.Println("quit", q)
 			return
 		}
 	}
@@ -124,7 +145,9 @@ func RunTest() {
 		for i := 0; i < 10; i++ {
 			fmt.Println(<-c)
 		}
+
 		quit <- 0
 	}()
+
 	fibonacci(c, quit)
 }
