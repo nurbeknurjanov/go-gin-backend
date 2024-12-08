@@ -8,7 +8,10 @@ import (
 
 func RunTest() {
 	bctx := context.Background()
-	ctxValue := context.WithValue(bctx, "test", "testValue")
+
+	ctxValue := context.WithValue(bctx, "key", "testValue")
+	_ = context.WithValue(ctxValue, "key", "updated value")
+
 	ctxCancel, cancel := context.WithCancel(bctx)
 	_ = cancel
 
@@ -19,7 +22,7 @@ func RunTest() {
 		//time.Sleep(1 * time.Second)
 		select {
 		case <-ctxCancel.Done(): //подслушивает
-			fmt.Println("Operation cancelled", ctxValue.Value("test"))
+			fmt.Println("Operation cancelled", ctxValue.Value("key"))
 		case <-deadlineCtx.Done():
 			fmt.Println("Deadline exceeded:", deadlineCtx.Err())
 		case <-time.After(3 * time.Second):
