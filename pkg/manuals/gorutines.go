@@ -1,7 +1,5 @@
 package manuals
 
-import "fmt"
-
 /*
 go - async
 <- назначение это как resolve
@@ -149,7 +147,7 @@ func RunTest() {
 	fibonacci(c, enough)
 }*/
 
-func fillData(data, exit chan int) {
+/*func fillData(data, exit chan int) {
 	x := 0
 	for {
 		select {
@@ -160,6 +158,7 @@ func fillData(data, exit chan int) {
 			return
 		default:
 			fmt.Println("Waiting")
+			time.Sleep(50 * time.Millisecond)
 		}
 	}
 }
@@ -177,3 +176,16 @@ func RunTest() {
 
 	fillData(data, exit)
 }
+*/
+
+/*func WaitGorutine() {
+	exit := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(i)
+		}
+		exit <- 0
+	}()
+	fmt.Println("Exit", <-exit)
+}
+*/
