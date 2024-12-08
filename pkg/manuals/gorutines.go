@@ -1,6 +1,8 @@
 package manuals
 
-import "fmt"
+import (
+	"time"
+)
 
 /*
 go - async
@@ -88,7 +90,7 @@ func Run() {
 	}
 }*/
 
-func Say(ch chan int) {
+/*func Say(ch chan int) {
 	defer close(ch)
 	for i := 0; i < 10; i++ {
 		ch <- i
@@ -100,4 +102,19 @@ func Run() {
 	for i := range ch {
 		fmt.Println(i)
 	}
+}*/
+
+func Say(ch chan int) {
+	//defer close(ch)
+	for i := 0; i < 10; i++ {
+		time.Sleep(1 * time.Second)
+		ch <- i
+	}
+}
+func RunGorutines() {
+	ch := make(chan int)
+	go Say(ch)
+	/*for i := range ch {
+		fmt.Println(i)
+	}*/
 }

@@ -16,8 +16,9 @@ import (
 )
 
 func main() {
-	manuals.Run()
+	manuals.RunTest()
 	return
+	//logrus.SetLevel(logrus.InfoLevel)
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
 	if err := initConfig(); err != nil {
