@@ -139,15 +139,10 @@ func fibonacci(c, quit chan int) {
 }
 
 func RunTest() {
-	c := make(chan int)
-	quit := make(chan int)
+	c := 1
 	go func() {
-		for i := 0; i < 10; i++ {
-			fmt.Println(<-c)
-		}
-
-		quit <- 0
+		c++
 	}()
 
-	fibonacci(c, quit)
+	fmt.Println(c)
 }
