@@ -1,5 +1,10 @@
 package manuals
 
+import (
+	"fmt"
+	"hash/fnv"
+)
+
 type Test struct {
 	ID   *int    `json:"id"`
 	Name *string `json:"name,omitempty"`
@@ -43,3 +48,10 @@ func RunTest() {
 	y := []any{1, 2, 3}
 	CallMe("a", y...) //только слайсы
 }*/
+
+// Пример хэш-функции
+func hash(key int) uint32 {
+	h := fnv.New32a()
+	h.Write([]byte(fmt.Sprintf("%d", key)))
+	return h.Sum32()
+}

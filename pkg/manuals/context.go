@@ -1,16 +1,9 @@
 package manuals
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
-
-func RunTest() {
+/*func RunTest() {
 	bctx := context.Background()
 
 	ctxValue := context.WithValue(bctx, "key", "testValue")
-	_ = context.WithValue(ctxValue, "key", "updated value")
 
 	ctxCancel, cancel := context.WithCancel(bctx)
 	_ = cancel
@@ -19,10 +12,11 @@ func RunTest() {
 	defer cancelDead() // Освобождаем ресурсы
 
 	go func() {
+		fmt.Println("Value", ctxValue.Value("key"))
 		//time.Sleep(1 * time.Second)
 		select {
 		case <-ctxCancel.Done(): //подслушивает
-			fmt.Println("Operation cancelled", ctxValue.Value("key"))
+			fmt.Println("Operation cancelled")
 		case <-deadlineCtx.Done():
 			fmt.Println("Deadline exceeded:", deadlineCtx.Err())
 		case <-time.After(3 * time.Second):
@@ -34,3 +28,4 @@ func RunTest() {
 	//cancel()
 	time.Sleep(5 * time.Second)
 }
+*/
