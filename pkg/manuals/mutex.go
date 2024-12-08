@@ -1,7 +1,5 @@
 package manuals
 
-import "fmt"
-
 /*func RunTest() {
 	var myMap = map[string]int{}
 
@@ -35,7 +33,7 @@ import "fmt"
 	fmt.Println("all done")
 }*/
 
-func merge(channels ...<-chan int) <-chan int {
+/*func merge(channels ...<-chan int) <-chan int {
 	var mergedChannel = make(chan int)
 
 	go func() {
@@ -49,7 +47,6 @@ func merge(channels ...<-chan int) <-chan int {
 
 	return mergedChannel
 }
-
 func RunTest() {
 	channel1 := make(chan int)
 	channel2 := make(chan int)
@@ -76,4 +73,4 @@ func RunTest() {
 		fmt.Println(num)
 	}
 
-}
+}*/
