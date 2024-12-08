@@ -23,8 +23,7 @@ type Test struct {
 	fmt.Println("End")
 }*/
 
-func RunTest() {
-
+/*func RunTest() {
 	switch a := 2; a {
 	default:
 		fmt.Println("Default")
@@ -36,4 +35,14 @@ func RunTest() {
 		fmt.Println(2)
 	}
 	fmt.Println("End")
+}*/
+
+func CallMe(x string, y ...any) {
+	fmt.Println(x)
+	fmt.Println(y...) //only any
+}
+
+func RunTest() {
+	y := []any{1, 2, 3}
+	CallMe("a", y...) //только слайсы
 }
