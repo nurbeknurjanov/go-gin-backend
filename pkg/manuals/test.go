@@ -8,7 +8,7 @@ type Test struct {
 	Age  *string `json:"age"`
 }
 
-func RunTest() {
+/*func RunTest() {
 	a := 2
 	switch {
 	default:
@@ -17,6 +17,21 @@ func RunTest() {
 		fmt.Println(1)
 		fmt.Println(1)
 	case a == 2:
+		fmt.Println(2)
+		fmt.Println(2)
+	}
+	fmt.Println("End")
+}*/
+
+func RunTest() {
+
+	switch a := 2; a {
+	default:
+		fmt.Println("Default")
+	case 1:
+		fmt.Println(1)
+		fmt.Println(1)
+	case 2:
 		fmt.Println(2)
 		fmt.Println(2)
 	}
