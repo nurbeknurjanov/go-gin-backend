@@ -74,23 +74,16 @@ func GoRun() {
 }
 */
 
-func Say(ch chan int) {
+func Listen(ch chan int) {
 	defer close(ch)
-
-	for i := 1; i < 10; i++ {
-		ch <- i
-	}
-
-}
-func Run() {
-	ch := make(chan int)
-
-	go Say(ch)
 	for i := range ch {
 		fmt.Println(i)
 	}
-
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
+}
+func Run() {
+	ch := make(chan int)
+	go Listen(ch)
+	for i := 0; i < 10; i++ {
+		ch <- i
+	}
 }
