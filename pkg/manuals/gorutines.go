@@ -1,8 +1,6 @@
 package manuals
 
-import (
-	"fmt"
-)
+import "fmt"
 
 /*
 go - async
@@ -104,51 +102,76 @@ func Run() {
 	}
 }*/
 
-func goOne(ch chan string) {
-	ch <- "From goOne goroutine"
+/*func goOne(ch chan string) {
+	<-ch
 }
 func goTwo(ch chan string) {
-	ch <- "From goTwo goroutine"
+	<-ch
 }
 func RunTest() {
 	ch1 := make(chan string)
 	ch2 := make(chan string)
 
 	go goOne(ch1)
-	go goTwo(ch2)
+	//go goTwo(ch2)
 
 	select {
-	case msg11 := <-ch1:
-		fmt.Println("msg11", msg11)
-	case msg22 := <-ch2: //stronger
-		fmt.Println("msg22", msg22)
+	case ch1 <- "A":
+		fmt.Println("msg11")
+	case ch2 <- "B":
+		fmt.Println("msg22")
 	}
-}
+}*/
 
-func fibonacci(c, quit chan int) {
+/*func fibonacci(c chan int, enough chan bool) {
 	x, y := 0, 1
 	for {
 		select {
 		case c <- x:
 			x, y = y, x+y
-		case q := <-quit:
-			fmt.Println("quit", q)
+		case <-enough:
+			fmt.Println("quit")
 			return
 		}
 	}
 }
-
-func RunTest1() {
+func RunTest() {
 	c := make(chan int)
-	_ = c
-	quit := make(chan int)
+	enough := make(chan bool)
 	go func() {
 		for i := 0; i < 10; i++ {
 			fmt.Println(<-c)
 		}
 
-		quit <- 0
+		enough <- true
 	}()
 
-	fibonacci(c, quit)
+	fibonacci(c, enough)
+}*/
+
+func fillData(data, exit chan int) {
+	x := 0
+	for {
+		select {
+		case data <- x:
+			x++
+		case <-exit:
+			fmt.Println("Exit")
+			return
+		}
+	}
+}
+
+func RunTest() {
+	data := make(chan int)
+	exit := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-data)
+		}
+
+		exit <- 0
+	}()
+
+	fillData(data, exit)
 }
