@@ -35,15 +35,19 @@ import "fmt"
 	fmt.Println("all done")
 }*/
 
-func merge(channels ...<-chan int) (mergedChannel chan int) {
-	//var mergedChannel = make(chan int)
+func merge(channels ...<-chan int) <-chan int {
+	var mergedChannel = make(chan int)
 
-	for _, channel := range channels {
-		for num := range channel {
-			mergedChannel <- num
+	go func() {
+		defer close(mergedChannel)
+		for _, channel := range channels {
+			for num := range channel {
+				mergedChannel <- num
+			}
 		}
-	}
-	return
+	}()
+
+	return mergedChannel
 }
 
 func RunTest() {
