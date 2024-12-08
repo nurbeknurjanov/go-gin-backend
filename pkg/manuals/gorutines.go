@@ -158,6 +158,8 @@ func fillData(data, exit chan int) {
 		case <-exit:
 			fmt.Println("Exit")
 			return
+		default:
+			fmt.Println("Waiting")
 		}
 	}
 }
