@@ -1,10 +1,5 @@
 package manuals
 
-import (
-	"fmt"
-	"sync"
-)
-
 /*func RunTest() {
 	var myMap = map[string]int{}
 
@@ -24,7 +19,7 @@ import (
 	time.Sleep(3 * time.Second)
 }*/
 
-func RunTest() {
+/*func RunTest() {
 	wg := sync.WaitGroup{}
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
@@ -36,4 +31,34 @@ func RunTest() {
 
 	wg.Wait()
 	fmt.Println("all done")
+}*/
+
+func merge(channels ...<-chan int) <-chan int {
+	var mergedChannel = make(chan int)
+
+	for _, channel := range channels {
+		for num := range channel {
+			mergedChannel <- num
+		}
+	}
+}
+func RunTest() {
+	channel1 := make(chan int)
+	channel2 := make(chan int)
+	channel3 := make(chan int)
+
+	go func() {
+		channel1 <- 1
+		channel1 <- 11
+	}()
+	go func() {
+		channel2 <- 2
+	}()
+	go func() {
+		channel3 <- 3
+		channel3 <- 30
+		channel3 <- 33
+	}()
+
+	channels := merge(channel1, channel2, channel3)
 }
