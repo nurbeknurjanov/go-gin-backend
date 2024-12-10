@@ -98,3 +98,9 @@ func RunTest() {
 	fillData(data, exit)
 }
 */
+
+/*var a = make(chan int)
+go func() {
+	fmt.Println(<-a)
+}()
+a <- 1*/

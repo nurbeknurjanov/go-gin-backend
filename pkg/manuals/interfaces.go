@@ -22,3 +22,8 @@ func RunInterfaces() {
 	var c BC = a.(BC)
 	c.C()
 }
+
+/*var a *A
+fmt.Println(a == nil)
+fmt.Println(I(a) == nil)
+fmt.Println(I(a) == a)//false*/
