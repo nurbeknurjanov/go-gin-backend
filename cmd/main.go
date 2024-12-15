@@ -5,6 +5,8 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
@@ -37,9 +39,9 @@ func main() {
 		logrus.Fatalf("error connecting to database: %s", err.Error())
 	}
 
-	repositories := repositories.NewRepositories(db)
-	services := services.NewServices(repositories)
-	handlers := handler.NewHandler(services)
+	repo := repositories.NewSqlRepositories(db)
+	s := services.NewServices(repo)
+	handlers := handler.NewHandler(s)
 
 	server := new(go_backend.Server)
 	if err := server.Start(viper.GetString("port"), handlers.InitRoutes()); err != nil {
