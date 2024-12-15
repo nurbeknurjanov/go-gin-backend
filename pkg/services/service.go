@@ -23,6 +23,7 @@ type Users interface {
 	Update(*models.User, *models.UserPartial) error
 	Delete(*models.User) error
 	Find(id string) (*models.User, error)
+	FindByEmail(email string) (*models.User, error)
 	List(*repositories.PaginationRequest, *repositories.Sort, *models.UserFilter) ([]*models.User, error)
 	Count(*models.UserFilter) (*int, error)
 	ChangeUserPassword(*models.User, string) error

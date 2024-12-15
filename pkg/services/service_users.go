@@ -38,6 +38,9 @@ func (s *UsersService) Delete(m *models.User) error {
 func (s *UsersService) Find(ID string) (*models.User, error) {
 	return s.repo.Find(ID)
 }
+func (s *UsersService) FindByEmail(email string) (*models.User, error) {
+	return s.repo.FindByEmail(email)
+}
 
 func (s *UsersService) List(p *repositories.PaginationRequest, sort *repositories.Sort, f *models.UserFilter) ([]*models.User, error) {
 	return s.repo.List(p, sort, f)

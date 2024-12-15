@@ -5,6 +5,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/uuid"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"math"
 	"net/http"
 	"strconv"
@@ -40,7 +41,7 @@ func (h *Handler) createFile(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.IFilesService.CreateFile(&input); err != nil {
+	if err := h.services.Files.Create(&input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -67,12 +68,12 @@ func (h *Handler) listFiles(c *gin.Context) {
 		f.ModelId = &modelId
 	}
 
-	list, err := h.services.ListFiles(p, s, f)
+	list, err := h.services.Files.List(p, s, f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	count, err := h.services.CountFiles(f)
+	count, err := h.services.Files.Count(f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
@@ -89,13 +90,13 @@ func (h *Handler) listFiles(c *gin.Context) {
 }
 
 func (h *Handler) deleteFile(c *gin.Context) {
-	m, err := h.services.FindFile(c.Param("id"))
+	m, err := h.services.Files.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.services.DeleteFile(m); err != nil {
+	if err := h.services.Files.Delete(m); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -104,7 +105,7 @@ func (h *Handler) deleteFile(c *gin.Context) {
 }
 
 func (h *Handler) viewFile(c *gin.Context) {
-	m, err := h.services.FindFile(c.Param("id"))
+	m, err := h.services.Files.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return

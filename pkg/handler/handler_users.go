@@ -5,6 +5,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"math"
 	"net/http"
 	"strconv"
@@ -23,12 +24,12 @@ func (h *Handler) createUser(c *gin.Context) {
 		return
 	}
 
-	if existedUser, _ := h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*input.Email); existedUser != nil {
+	if existedUser, _ := h.services.Users.FindByEmail(*input.Email); existedUser != nil {
 		newErrorResponse(c, http.StatusBadRequest, validation.Errors{"email": helpers.ErrExistUserEmail})
 		return
 	}
 
-	if err := h.services.IUsersService.CreateUser(input); err != nil {
+	if err := h.services.Users.Create(input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -49,7 +50,7 @@ func (h *Handler) updateUser(c *gin.Context) {
 		return
 	}
 
-	u, err := h.services.IUsersService.FindUser(c.Param("id"))
+	u, err := h.services.Users.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
@@ -57,13 +58,13 @@ func (h *Handler) updateUser(c *gin.Context) {
 
 	//input["email"].(string)
 	if input.Email != nil {
-		if existedUser, _ := h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
+		if existedUser, _ := h.services.Users.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
 			newErrorResponse(c, http.StatusBadRequest, validation.Errors{"Email": helpers.ErrExistUserEmail})
 			return
 		}
 	}
 
-	if err := h.services.IUsersService.UpdateUser(u, input); err != nil {
+	if err := h.services.Users.Update(u, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -77,7 +78,7 @@ func (h *Handler) updateUser(c *gin.Context) {
 }
 
 func (h *Handler) viewUser(c *gin.Context) {
-	u, err := h.services.IUsersService.FindUser(c.Param("id"))
+	u, err := h.services.Users.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
@@ -139,12 +140,12 @@ func (h *Handler) listUsers(c *gin.Context) {
 		f.Age = &age
 	}
 
-	list, err := h.services.IUsersService.ListUsers(p, s, f)
+	list, err := h.services.Users.List(p, s, f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	count, err := h.services.IUsersService.CountUsers(f)
+	count, err := h.services.Users.Count(f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
@@ -161,13 +162,13 @@ func (h *Handler) listUsers(c *gin.Context) {
 }
 
 func (h *Handler) deleteUser(c *gin.Context) {
-	u, err := h.services.IUsersService.FindUser(c.Param("id"))
+	u, err := h.services.Users.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.services.IUsersService.DeleteUser(u); err != nil {
+	if err := h.services.Users.Delete(u); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -183,7 +184,7 @@ func (h *Handler) changeUserPassword(c *gin.Context) {
 		return
 	}
 
-	u, err := h.services.IUsersService.FindUser(c.Param("id"))
+	u, err := h.services.Users.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
@@ -194,7 +195,7 @@ func (h *Handler) changeUserPassword(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.IUsersService.ChangeUserPassword(u, input.Password); err != nil {
+	if err := h.services.Users.ChangeUserPassword(u, input.Password); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}

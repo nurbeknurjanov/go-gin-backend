@@ -32,13 +32,13 @@ func (h *Handler) profileUpdate(c *gin.Context) {
 	u := uData.(*models.User)
 
 	if input.Email != nil {
-		if existedUser, _ := h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
+		if existedUser, _ := h.services.Users.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
 			newErrorResponse(c, http.StatusBadRequest, validation.Errors{"email": helpers.ErrExistUserEmail})
 			return
 		}
 	}
 
-	if err := h.services.IProfileService.UpdateProfile(u, input); err != nil {
+	if err := h.services.Profile.UpdateProfile(u, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -56,13 +56,13 @@ func (h *Handler) profileChangePassword(c *gin.Context) {
 
 	uData, _ := c.Get(userCtx)
 	u := uData.(*models.User)
-	u, _ = h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*u.Email)
+	u, _ = h.services.Users.FindByEmail(*u.Email)
 	if err := u.ValidateCurrentPassword(input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.services.IUsersService.ChangeUserPassword(u, input.Password); err != nil {
+	if err := h.services.Users.ChangeUserPassword(u, input.Password); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}

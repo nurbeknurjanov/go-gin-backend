@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"math"
 	"net/http"
 	"strconv"
@@ -21,7 +22,7 @@ func (h *Handler) createProduct(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.CreateProduct(input); err != nil {
+	if err := h.services.Products.Create(input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -42,13 +43,13 @@ func (h *Handler) updateProduct(c *gin.Context) {
 		return
 	}
 
-	m, err := h.services.FindProduct(c.Param("id"))
+	m, err := h.services.Products.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.services.UpdateProduct(m, input); err != nil {
+	if err := h.services.Products.Update(m, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -57,7 +58,7 @@ func (h *Handler) updateProduct(c *gin.Context) {
 }
 
 func (h *Handler) viewProduct(c *gin.Context) {
-	m, err := h.services.FindProduct(c.Param("id"))
+	m, err := h.services.Products.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
@@ -83,12 +84,12 @@ func (h *Handler) listProducts(c *gin.Context) {
 		f.Description = &Description
 	}
 
-	list, err := h.services.ListProducts(p, s, f)
+	list, err := h.services.Products.List(p, s, f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	count, err := h.services.CountProducts(f)
+	count, err := h.services.Products.Count(f)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
@@ -105,13 +106,13 @@ func (h *Handler) listProducts(c *gin.Context) {
 }
 
 func (h *Handler) deleteProduct(c *gin.Context) {
-	m, err := h.services.FindProduct(c.Param("id"))
+	m, err := h.services.Products.Find(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.services.DeleteProduct(m); err != nil {
+	if err := h.services.Products.Delete(m); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}

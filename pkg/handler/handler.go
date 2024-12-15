@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 )
 
 type Handler struct {

@@ -22,7 +22,7 @@ func (h *Handler) login(c *gin.Context) {
 		return
 	}
 
-	tokens, err := h.services.IAuthService.Login(input.Email, input.Password)
+	tokens, err := h.services.Auth.Login(input.Email, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
@@ -33,7 +33,7 @@ func (h *Handler) login(c *gin.Context) {
 
 func (h *Handler) getAccessToken(c *gin.Context) {
 	uData, _ := c.Get(userCtx)
-	token, err := h.services.IAuthService.GetAccessToken(uData.(*models.User))
+	token, err := h.services.Auth.GetAccessToken(uData.(*models.User))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
