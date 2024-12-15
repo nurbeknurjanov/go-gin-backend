@@ -19,7 +19,7 @@ type Users interface {
 
 type Products interface {
 	Create(*models.Product) error
-	CreateWithImage(*models.Product, *sql.Tx) error
+	CreateWithImage(*models.Product, *models.File, Files) error
 	Update(*models.Product, *models.ProductPartial) error
 	Delete(*models.Product) error
 	Find(string) (*models.Product, error)

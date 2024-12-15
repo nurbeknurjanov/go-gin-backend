@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -19,22 +18,48 @@ func newProductsSqlRepository(sqlDb *sqlx.DB) *ProductsSqlRepository {
 
 func (r *ProductsSqlRepository) Create(m *models.Product) error {
 	if m.Description == nil {
-		Description := ""
-		m.Description = &Description
+		m.Description = new(string)
+		*m.Description = ""
 	}
 	query := fmt.Sprintf("INSERT INTO products (name, description) values ($1, $2) RETURNING id, created_at, updated_at")
 	row := r.db.QueryRow(query, m.Name, m.Description)
 
 	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 }
-func (r *ProductsSqlRepository) CreateWithImage(m *models.Product, tx *sql.Tx) error {
+func (r *ProductsSqlRepository) CreateWithImage(m *models.Product, fm *models.File, filesRepo Files) error {
 	if m.Description == nil {
-		Description := ""
-		m.Description = &Description
+		m.Description = new(string)
+		*m.Description = ""
 	}
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
 	query := fmt.Sprintf("INSERT INTO products (name, description) values ($1, $2) RETURNING id, created_at, updated_at")
 	row := tx.QueryRow(query, m.Name, m.Description)
-	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
+	if err = row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt); err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+
+	fp := &models.FilePartial{}
+	modelName := "Product"
+	fp.ModelName = &modelName
+	fp.ModelId = m.ID
+	fp.Data = new(map[string]string)
+	*fp.Data = map[string]string{"type": "image"}
+
+	if err = filesRepo.Update(fm, fp, tx); err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+
+	m.Image = &models.File{ID: fm.ID, Ext: fm.Ext, UUID: fm.UUID, Data: fp.Data}
+
+	return tx.Commit()
+
 }
 
 func (r *ProductsSqlRepository) Update(m *models.Product, data *models.ProductPartial) error {
