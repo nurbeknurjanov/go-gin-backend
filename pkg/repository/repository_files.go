@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-type FilesRepository struct {
+type FilesSqlRepository struct {
 	db *sqlx.DB
 }
 
-func newFilesRepository(db *sqlx.DB) *FilesRepository {
-	return &FilesRepository{db: db}
+func newFilesSqlRepository(sqlDb *sqlx.DB) *FilesSqlRepository {
+	return &FilesSqlRepository{db: sqlDb}
 }
 
-func (r *FilesRepository) CreateFile(m *models.File) error {
+func (r *FilesSqlRepository) Create(m *models.File) error {
 	var Data interface{} = nil
 	if m.Data != nil && len(*m.Data) > 0 {
 		j, err := json.Marshal(m.Data)
@@ -32,7 +32,7 @@ func (r *FilesRepository) CreateFile(m *models.File) error {
 	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 }
 
-func (r *FilesRepository) UpdateFile(m *models.File, data *models.FilePartial, tx *sql.Tx) error {
+func (r *FilesSqlRepository) Update(m *models.File, data *models.FilePartial, tx *sql.Tx) error {
 	fields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -64,7 +64,7 @@ func (r *FilesRepository) UpdateFile(m *models.File, data *models.FilePartial, t
 	return row.Scan(&m.ModelName, &m.ModelId, &m.UpdatedAt)
 }
 
-func (r *FilesRepository) ListFiles(p *PaginationRequest, s *Sort, f *models.FileFilter) ([]*models.File, error) {
+func (r *FilesSqlRepository) List(p *PaginationRequest, s *Sort, f *models.FileFilter) ([]*models.File, error) {
 	list := []*models.File{}
 
 	where, values, argIndex := r.where(f)
@@ -106,7 +106,7 @@ func (r *FilesRepository) ListFiles(p *PaginationRequest, s *Sort, f *models.Fil
 	return list, nil
 }
 
-func (r *FilesRepository) where(f *models.FileFilter) (string, []any, int) {
+func (r *FilesSqlRepository) where(f *models.FileFilter) (string, []any, int) {
 	fields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -130,7 +130,7 @@ func (r *FilesRepository) where(f *models.FileFilter) (string, []any, int) {
 	return where, values, argIndex
 }
 
-func (r *FilesRepository) CountFiles(f *models.FileFilter) (*int, error) {
+func (r *FilesSqlRepository) Count(f *models.FileFilter) (*int, error) {
 	where, values, _ := r.where(f)
 	query := fmt.Sprintf("SELECT COUNT(*) FROM files %s", where)
 	row := r.db.QueryRow(query, values...)
@@ -143,13 +143,13 @@ func (r *FilesRepository) CountFiles(f *models.FileFilter) (*int, error) {
 	return &count, nil
 }
 
-func (r *FilesRepository) DeleteFile(m *models.File) error {
+func (r *FilesSqlRepository) Delete(m *models.File) error {
 	query := fmt.Sprintf("DELETE FROM files WHERE id = $1")
 	_, err := r.db.Exec(query, m.ID)
 	return err
 }
 
-func (r *FilesRepository) FindFile(ID string) (*models.File, error) {
+func (r *FilesSqlRepository) Find(ID string) (*models.File, error) {
 	m := &models.File{}
 	query := fmt.Sprintf("SELECT id, original_file_name, ext, uuid, data, model_name, model_id, created_at, updated_at FROM files WHERE id = $1")
 	row := r.db.QueryRow(query, ID)

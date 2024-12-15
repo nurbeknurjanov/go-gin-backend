@@ -9,21 +9,21 @@ import (
 	"strings"
 )
 
-type UsersRepository struct {
+type UsersSqlRepository struct {
 	db *sqlx.DB
 }
 
-func newUsersRepository(db *sqlx.DB) *UsersRepository {
-	return &UsersRepository{db: db}
+func newUsersSqlRepository(sqlDb *sqlx.DB) *UsersSqlRepository {
+	return &UsersSqlRepository{db: sqlDb}
 }
 
-func (r *UsersRepository) CreateUser(u *models.User) error {
+func (r *UsersSqlRepository) Create(u *models.User) error {
 	query := "INSERT INTO users (email, encrypted_password, name, age, sex, status) values ($1, $2, $3, $4, $5, $6) RETURNING id, created_at, updated_at"
 	row := r.db.QueryRow(query, u.Email, u.Password, u.Name, u.Age, u.Sex, u.Status)
 	return row.Scan(&u.ID, &u.CreatedAt, &u.UpdatedAt)
 }
 
-func (r *UsersRepository) UpdateUser(u *models.User, data *models.UserPartial) error {
+func (r *UsersSqlRepository) Update(u *models.User, data *models.UserPartial) error {
 	updateFields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -57,13 +57,13 @@ func (r *UsersRepository) UpdateUser(u *models.User, data *models.UserPartial) e
 	return row.Scan(&u.Email, &u.Name, &u.Age, &u.Sex, &u.Status, &u.UpdatedAt)
 }
 
-func (r *UsersRepository) DeleteUser(u *models.User) error {
+func (r *UsersSqlRepository) Delete(u *models.User) error {
 	query := fmt.Sprintf("DELETE FROM users WHERE id = $1")
 	_, err := r.db.Exec(query, u.ID)
 	return err
 }
 
-func (r *UsersRepository) FindUser(ID string) (*models.User, error) {
+func (r *UsersSqlRepository) Find(ID string) (*models.User, error) {
 	u := &models.User{}
 	query := "SELECT id, email, name, age, sex, status, created_at, updated_at FROM users WHERE id = $1"
 	row := r.db.QueryRow(query, ID)
@@ -74,7 +74,7 @@ func (r *UsersRepository) FindUser(ID string) (*models.User, error) {
 	return u, nil
 }
 
-func (r *UsersRepository) ListUsers(p *PaginationRequest, s *Sort, f *models.UserFilter) ([]*models.User, error) {
+func (r *UsersSqlRepository) List(p *PaginationRequest, s *Sort, f *models.UserFilter) ([]*models.User, error) {
 	list := []*models.User{}
 
 	where, values, argIndex := r.where(f)
@@ -108,7 +108,7 @@ func (r *UsersRepository) ListUsers(p *PaginationRequest, s *Sort, f *models.Use
 	return list, nil
 }
 
-func (r *UsersRepository) where(f *models.UserFilter) (string, []any, int) {
+func (r *UsersSqlRepository) where(f *models.UserFilter) (string, []any, int) {
 	whereFields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -175,7 +175,7 @@ func (r *UsersRepository) where(f *models.UserFilter) (string, []any, int) {
 
 	return where, values, argIndex
 }
-func (r *UsersRepository) CountUsers(f *models.UserFilter) (*int, error) {
+func (r *UsersSqlRepository) Count(f *models.UserFilter) (*int, error) {
 	where, values, _ := r.where(f)
 	query := fmt.Sprintf("SELECT COUNT(*) FROM users %s", where)
 	row := r.db.QueryRow(query, values...)
@@ -188,7 +188,7 @@ func (r *UsersRepository) CountUsers(f *models.UserFilter) (*int, error) {
 	return &count, nil
 }
 
-func (r *UsersRepository) FindByEmail(email string) (*models.User, error) {
+func (r *UsersSqlRepository) FindByEmail(email string) (*models.User, error) {
 	var u models.User
 	query := "SELECT id, email, encrypted_password AS password, name, age, sex, status, created_at, updated_at FROM users WHERE email=$1"
 	//err := r.db.Get(&u, query, email)
@@ -201,7 +201,7 @@ func (r *UsersRepository) FindByEmail(email string) (*models.User, error) {
 	return &u, nil
 }
 
-func (r *UsersRepository) ChangeUserPassword(u *models.User, password string) error {
+func (r *UsersSqlRepository) ChangeUserPassword(u *models.User, password string) error {
 	query := "UPDATE users SET encrypted_password = $1 WHERE id = $2"
 	return r.db.QueryRow(query, password, u.ID).Err()
 }

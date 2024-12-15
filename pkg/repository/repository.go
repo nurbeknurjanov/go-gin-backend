@@ -6,49 +6,48 @@ import (
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
 )
 
-type IUsersRepository interface {
-	CreateUser(*models.User) error
-	UpdateUser(*models.User, *models.UserPartial) error
-	DeleteUser(*models.User) error
-	FindUser(string) (*models.User, error)
-	ListUsers(*PaginationRequest, *Sort, *models.UserFilter) ([]*models.User, error)
-	CountUsers(*models.UserFilter) (*int, error)
+type Users interface {
+	Create(*models.User) error
+	Update(*models.User, *models.UserPartial) error
+	Delete(*models.User) error
+	Find(string) (*models.User, error)
+	List(*PaginationRequest, *Sort, *models.UserFilter) ([]*models.User, error)
+	Count(*models.UserFilter) (*int, error)
 	FindByEmail(string) (*models.User, error)
-
 	ChangeUserPassword(u *models.User, password string) error
 }
 
-type IProductsRepository interface {
-	CreateProduct(*models.Product) error
-	CreateProductWithImage(*models.Product, *sql.Tx) error
-	UpdateProduct(*models.Product, *models.ProductPartial) error
-	DeleteProduct(*models.Product) error
-	FindProduct(string) (*models.Product, error)
-	ListProducts(*PaginationRequest, *Sort, *models.ProductFilter) ([]*models.Product, error)
-	CountProducts(*models.ProductFilter) (*int, error)
+type Products interface {
+	Create(*models.Product) error
+	CreateWithImage(*models.Product, *sql.Tx) error
+	Update(*models.Product, *models.ProductPartial) error
+	Delete(*models.Product) error
+	Find(string) (*models.Product, error)
+	List(*PaginationRequest, *Sort, *models.ProductFilter) ([]*models.Product, error)
+	Count(*models.ProductFilter) (*int, error)
 }
 
-type IFilesRepository interface {
-	CreateFile(*models.File) error
-	ListFiles(*PaginationRequest, *Sort, *models.FileFilter) ([]*models.File, error)
-	CountFiles(*models.FileFilter) (*int, error)
-	DeleteFile(*models.File) error
-	FindFile(string) (*models.File, error)
-	UpdateFile(*models.File, *models.FilePartial, *sql.Tx) error
+type Files interface {
+	Create(*models.File) error
+	List(*PaginationRequest, *Sort, *models.FileFilter) ([]*models.File, error)
+	Count(*models.FileFilter) (*int, error)
+	Delete(*models.File) error
+	Find(string) (*models.File, error)
+	Update(*models.File, *models.FilePartial, *sql.Tx) error
 }
 
 type Repositories struct {
 	Db *sqlx.DB
-	IUsersRepository
-	IProductsRepository
-	IFilesRepository
+	Users
+	Products
+	Files
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
-		Db:                  db,
-		IUsersRepository:    newUsersRepository(db),
-		IProductsRepository: newProductsRepository(db),
-		IFilesRepository:    newFilesRepository(db),
+		Db:       db,
+		Users:    newUsersSqlRepository(db),
+		Products: newProductsSqlRepository(db),
+		Files:    newFilesSqlRepository(db),
 	}
 }

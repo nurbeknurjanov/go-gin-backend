@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-type ProductsRepository struct {
+type ProductsSqlRepository struct {
 	db *sqlx.DB
 }
 
-func newProductsRepository(db *sqlx.DB) *ProductsRepository {
-	return &ProductsRepository{db: db}
+func newProductsSqlRepository(sqlDb *sqlx.DB) *ProductsSqlRepository {
+	return &ProductsSqlRepository{db: sqlDb}
 }
 
-func (r *ProductsRepository) CreateProduct(m *models.Product) error {
+func (r *ProductsSqlRepository) Create(m *models.Product) error {
 	if m.Description == nil {
 		Description := ""
 		m.Description = &Description
@@ -27,7 +27,7 @@ func (r *ProductsRepository) CreateProduct(m *models.Product) error {
 
 	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 }
-func (r *ProductsRepository) CreateProductWithImage(m *models.Product, tx *sql.Tx) error {
+func (r *ProductsSqlRepository) CreateWithImage(m *models.Product, tx *sql.Tx) error {
 	if m.Description == nil {
 		Description := ""
 		m.Description = &Description
@@ -37,7 +37,7 @@ func (r *ProductsRepository) CreateProductWithImage(m *models.Product, tx *sql.T
 	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 }
 
-func (r *ProductsRepository) UpdateProduct(m *models.Product, data *models.ProductPartial) error {
+func (r *ProductsSqlRepository) Update(m *models.Product, data *models.ProductPartial) error {
 	fields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -60,13 +60,13 @@ func (r *ProductsRepository) UpdateProduct(m *models.Product, data *models.Produ
 	return row.Scan(&m.Name, &m.Description, &m.UpdatedAt)
 }
 
-func (r *ProductsRepository) DeleteProduct(m *models.Product) error {
+func (r *ProductsSqlRepository) Delete(m *models.Product) error {
 	query := fmt.Sprintf("DELETE FROM products WHERE id = $1")
 	_, err := r.db.Exec(query, m.ID)
 	return err
 }
 
-func (r *ProductsRepository) FindProduct(ID string) (*models.Product, error) {
+func (r *ProductsSqlRepository) Find(ID string) (*models.Product, error) {
 	m := &models.Product{}
 	fm := &models.File{}
 	var fDataString *string
@@ -90,7 +90,7 @@ func (r *ProductsRepository) FindProduct(ID string) (*models.Product, error) {
 	return m, nil
 }
 
-/*func (r *ProductsRepository) FindProduct(ID string) (*models.Product, error) {
+/*func (r *ProductsSqlRepository) FindProduct(ID string) (*models.Product, error) {
 	m := &models.Product{}
 	query := fmt.Sprintf("SELECT p.id, p.name, p.description, p.created_at, p.updated_at FROM products p WHERE p.id = $1")
 	row := r.db.QueryRow(query, ID)
@@ -100,7 +100,7 @@ func (r *ProductsRepository) FindProduct(ID string) (*models.Product, error) {
 	return m, nil
 }*/
 
-func (r *ProductsRepository) ListProducts(p *PaginationRequest, s *Sort, f *models.ProductFilter) ([]*models.Product, error) {
+func (r *ProductsSqlRepository) List(p *PaginationRequest, s *Sort, f *models.ProductFilter) ([]*models.Product, error) {
 	list := []*models.Product{}
 
 	where, values, argIndex := r.where(f)
@@ -147,7 +147,7 @@ func (r *ProductsRepository) ListProducts(p *PaginationRequest, s *Sort, f *mode
 	return list, nil
 }
 
-func (r *ProductsRepository) where(f *models.ProductFilter) (string, []any, int) {
+func (r *ProductsSqlRepository) where(f *models.ProductFilter) (string, []any, int) {
 	fields := []string{}
 	argIndex := 1
 	values := []any{}
@@ -170,7 +170,7 @@ func (r *ProductsRepository) where(f *models.ProductFilter) (string, []any, int)
 	return where, values, argIndex
 }
 
-func (r *ProductsRepository) CountProducts(f *models.ProductFilter) (*int, error) {
+func (r *ProductsSqlRepository) Count(f *models.ProductFilter) (*int, error) {
 	where, values, _ := r.where(f)
 	query := fmt.Sprintf("SELECT COUNT(*) FROM products %s", where)
 	row := r.db.QueryRow(query, values...)
