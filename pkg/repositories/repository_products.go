@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"reflect"
 	"strings"
 )
 
@@ -52,11 +51,10 @@ func (r *ProductsSqlRepository) CreateWithImage(m *models.Product, fm *models.Fi
 	fp.Data = new(map[string]string)
 	*fp.Data = map[string]string{"type": "image"}
 
-	fmt.Println("tx->", reflect.TypeOf(tx))
-	/*if err = filesRepo.Update(fm, fp, tx); err != nil {
+	if err = filesRepo.Update(fm, fp, tx); err != nil {
 		_ = tx.Rollback()
 		return err
-	}*/
+	}
 
 	m.Image = &models.File{ID: fm.ID, Ext: fm.Ext, UUID: fm.UUID, Data: fp.Data}
 

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -31,7 +32,7 @@ func (r *FilesSqlRepository) Create(m *models.File) error {
 	return row.Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 }
 
-func (r *FilesSqlRepository) Update(m *models.File, data *models.FilePartial, tx *sqlx.Tx) error {
+func (r *FilesSqlRepository) Update(m *models.File, data *models.FilePartial, tx *sql.Tx) error {
 	fields := []string{}
 	argIndex := 1
 	values := []any{}

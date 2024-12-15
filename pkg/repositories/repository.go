@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"database/sql"
 	"github.com/jmoiron/sqlx"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
 )
@@ -32,7 +33,7 @@ type Files interface {
 	Count(*models.FileFilter) (*int, error)
 	Delete(*models.File) error
 	Find(string) (*models.File, error)
-	Update(*models.File, *models.FilePartial, *sqlx.Tx) error
+	Update(*models.File, *models.FilePartial, *sql.Tx) error
 }
 
 // agnostic Repositories
