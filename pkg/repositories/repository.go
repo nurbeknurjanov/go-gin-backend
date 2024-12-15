@@ -1,4 +1,4 @@
-package repository
+package repositories
 
 import (
 	"database/sql"
@@ -36,6 +36,7 @@ type Files interface {
 	Update(*models.File, *models.FilePartial, *sql.Tx) error
 }
 
+// agnostic Repositories
 type Repositories struct {
 	Db *sqlx.DB
 	Users
@@ -43,7 +44,8 @@ type Repositories struct {
 	Files
 }
 
-func NewRepositories(db *sqlx.DB) *Repositories {
+// detailed
+func NewSqlRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
 		Db:       db,
 		Users:    newUsersSqlRepository(db),

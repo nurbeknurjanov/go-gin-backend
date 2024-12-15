@@ -4,44 +4,52 @@ import (
 	"errors"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 )
 
+// agnostic service
+// because repo repositories.Users is interface
 type UsersService struct {
-	UsersRepo repository.IUsersRepository
+	repo repositories.Users
 }
 
-func (s *UsersService) CreateUser(u *models.User) error {
-	encryptedPassword, err := helpers.EncryptString(*u.Password)
+// detailed sql service
+func newUsersSqlService(repo *repositories.UsersSqlRepository) *UsersService {
+	return &UsersService{repo: repo}
+}
+
+// all functions are agnostic despite it's struct, because repo is interface
+func (s *UsersService) Create(m *models.User) error {
+	encryptedPassword, err := helpers.EncryptString(*m.Password)
 	if err != nil {
 		return err
 	}
 
-	u.Password = &encryptedPassword
-	return s.UsersRepo.CreateUser(u)
+	m.Password = &encryptedPassword
+	return s.repo.Create(m)
 }
 
-func (s *UsersService) UpdateUser(u *models.User, data *models.UserPartial) error {
-	return s.UsersRepo.UpdateUser(u, data)
+func (s *UsersService) Update(m *models.User, data *models.UserPartial) error {
+	return s.repo.Update(m, data)
 }
 
-func (s *UsersService) DeleteUser(u *models.User) error {
-	return s.UsersRepo.DeleteUser(u)
+func (s *UsersService) Delete(m *models.User) error {
+	return s.repo.Delete(m)
 }
 
-func (s *UsersService) FindUser(ID string) (*models.User, error) {
-	return s.UsersRepo.FindUser(ID)
+func (s *UsersService) Find(ID string) (*models.User, error) {
+	return s.repo.Find(ID)
 }
 
-func (s *UsersService) ListUsers(p *repository.PaginationRequest, sort *repository.Sort, f *models.UserFilter) ([]*models.User, error) {
-	return s.UsersRepo.ListUsers(p, sort, f)
+func (s *UsersService) List(p *repositories.PaginationRequest, sort *repositories.Sort, f *models.UserFilter) ([]*models.User, error) {
+	return s.repo.List(p, sort, f)
 }
-func (s *UsersService) CountUsers(f *models.UserFilter) (*int, error) {
-	return s.UsersRepo.CountUsers(f)
+func (s *UsersService) Count(f *models.UserFilter) (*int, error) {
+	return s.repo.Count(f)
 }
 
-func (s *UsersService) ChangeUserPassword(u *models.User, password string) error {
-	if *u.Email == adminEmail {
+func (s *UsersService) ChangeUserPassword(m *models.User, password string) error {
+	if *m.Email == adminEmail {
 		return errors.New("Administrator can not be updated")
 	}
 
@@ -50,9 +58,5 @@ func (s *UsersService) ChangeUserPassword(u *models.User, password string) error
 		return err
 	}
 
-	return s.UsersRepo.ChangeUserPassword(u, encryptedPassword)
-}
-
-func newUsersService(repositories *repository.Repositories) *UsersService {
-	return &UsersService{UsersRepo: repositories}
+	return s.repo.ChangeUserPassword(m, encryptedPassword)
 }

@@ -5,7 +5,6 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/uuid"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
 	"math"
 	"net/http"
 	"strconv"
@@ -53,11 +52,11 @@ func (h *Handler) createFile(c *gin.Context) {
 func (h *Handler) listFiles(c *gin.Context) {
 	pageNumber, _ := strconv.Atoi(c.DefaultQuery("pageNumber", "0"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "12"))
-	p := &repository.PaginationRequest{pageNumber, pageSize}
+	p := &repositories.PaginationRequest{pageNumber, pageSize}
 
 	sortField := c.DefaultQuery("sortField", "id")
-	sortDirection := repository.SortType(c.DefaultQuery("sortDirection", string(repository.SORT_ASC)))
-	s := &repository.Sort{sortField, sortDirection}
+	sortDirection := repositories.SortType(c.DefaultQuery("sortDirection", string(repositories.SORT_ASC)))
+	s := &repositories.Sort{sortField, sortDirection}
 
 	f := &models.FileFilter{}
 	if ModelName, ok := c.GetQuery("modelName"); ok {
@@ -79,14 +78,14 @@ func (h *Handler) listFiles(c *gin.Context) {
 		return
 	}
 
-	pagination := new(repository.PaginationResponse)
+	pagination := new(repositories.PaginationResponse)
 	pagination.PageNumber = pageNumber
 	pagination.PageSize = pageSize
 	pagination.Total = *count
 	//fmt.Println(math.Round(x*100) / 100)
 	pagination.PageCount = int(math.Ceil(float64(pagination.Total) / float64(pagination.PageSize)))
 
-	c.JSON(http.StatusOK, repository.List[*models.File]{&list, pagination})
+	c.JSON(http.StatusOK, repositories.List[*models.File]{&list, pagination})
 }
 
 func (h *Handler) deleteFile(c *gin.Context) {

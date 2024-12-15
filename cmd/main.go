@@ -5,7 +5,6 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -26,7 +25,7 @@ func main() {
 		logrus.Fatalf("error reading env variables: %s", err.Error())
 	}
 
-	db, err := repository.NewPostgresDb(repository.DbConfig{
+	db, err := repositories.NewPostgresDb(repositories.DbConfig{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
@@ -39,7 +38,7 @@ func main() {
 		logrus.Fatalf("error connecting to database: %s", err.Error())
 	}
 
-	repositories := repository.NewRepositories(db)
+	repositories := repositories.NewRepositories(db)
 	services := service.NewServices(repositories)
 	handlers := handler.NewHandler(services)
 

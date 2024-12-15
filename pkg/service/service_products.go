@@ -2,14 +2,14 @@ package service
 
 import (
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"strconv"
 )
 
 type ProductsService struct {
 	RootServices *Services
-	productsRepo repository.IProductsRepository
-	filesRepo    repository.IFilesRepository
+	productsRepo repositories.IProductsRepository
+	filesRepo    repositories.IFilesRepository
 }
 
 func (s *ProductsService) CreateProduct(m *models.Product) error {
@@ -18,7 +18,7 @@ func (s *ProductsService) CreateProduct(m *models.Product) error {
 	}
 
 	//db := s.productsRepo.(*repository.Repositories).IProductsRepository.(*repository.ProductsRepository).Db
-	db := s.productsRepo.(*repository.Repositories).Db
+	db := s.productsRepo.(*repositories.Repositories).Db
 
 	tx, err := db.Begin()
 	if err != nil {
@@ -104,7 +104,7 @@ func (s *ProductsService) FindProduct(ID string) (*models.Product, error) {
 	return s.productsRepo.FindProduct(ID)
 }
 
-func (s *ProductsService) ListProducts(p *repository.PaginationRequest, sort *repository.Sort, f *models.ProductFilter) ([]*models.Product, error) {
+func (s *ProductsService) ListProducts(p *repositories.PaginationRequest, sort *repositories.Sort, f *models.ProductFilter) ([]*models.Product, error) {
 	return s.productsRepo.ListProducts(p, sort, f)
 }
 
@@ -112,6 +112,6 @@ func (s *ProductsService) CountProducts(f *models.ProductFilter) (*int, error) {
 	return s.productsRepo.CountProducts(f)
 }
 
-func newProductsService(repositories *repository.Repositories) *ProductsService {
+func newProductsService(repositories *repositories.Repositories) *ProductsService {
 	return &ProductsService{productsRepo: repositories, filesRepo: repositories}
 }

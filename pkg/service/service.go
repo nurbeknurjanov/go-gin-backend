@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 )
 
 const (
@@ -18,13 +18,13 @@ type IProfileService interface {
 	UpdateProfile(*models.User, *models.UserPartial) error
 }
 
-type IUsersService interface {
-	CreateUser(*models.User) error
-	UpdateUser(*models.User, *models.UserPartial) error
-	DeleteUser(*models.User) error
-	FindUser(id string) (*models.User, error)
-	ListUsers(*repository.PaginationRequest, *repository.Sort, *models.UserFilter) ([]*models.User, error)
-	CountUsers(*models.UserFilter) (*int, error)
+type Users interface {
+	Create(*models.User) error
+	Update(*models.User, *models.UserPartial) error
+	Delete(*models.User) error
+	Find(id string) (*models.User, error)
+	List(*repositories.PaginationRequest, *repositories.Sort, *models.UserFilter) ([]*models.User, error)
+	Count(*models.UserFilter) (*int, error)
 	ChangeUserPassword(*models.User, string) error
 }
 
@@ -33,13 +33,13 @@ type IProductsService interface {
 	UpdateProduct(*models.Product, *models.ProductPartial) error
 	DeleteProduct(*models.Product) error
 	FindProduct(id string) (*models.Product, error)
-	ListProducts(*repository.PaginationRequest, *repository.Sort, *models.ProductFilter) ([]*models.Product, error)
+	ListProducts(*repositories.PaginationRequest, *repositories.Sort, *models.ProductFilter) ([]*models.Product, error)
 	CountProducts(*models.ProductFilter) (*int, error)
 }
 
 type IFilesService interface {
 	CreateFile(*models.File) error
-	ListFiles(*repository.PaginationRequest, *repository.Sort, *models.FileFilter) ([]*models.File, error)
+	ListFiles(*repositories.PaginationRequest, *repositories.Sort, *models.FileFilter) ([]*models.File, error)
 	CountFiles(*models.FileFilter) (*int, error)
 	DeleteFile(*models.File) error
 	FindFile(id string) (*models.File, error)
@@ -48,18 +48,18 @@ type IFilesService interface {
 type Services struct {
 	IAuthService
 	IProfileService
-	IUsersService
+	Users
 	IProductsService
 	IFilesService
 }
 
-func NewServices(repositories *repository.Repositories) *Services {
+func NewServices(repositories *repositories.Repositories) *Services {
 	productsService := newProductsService(repositories)
 
 	RootServices := &Services{
 		IAuthService:     newAuthService(repositories),
 		IProfileService:  newProfileService(repositories),
-		IUsersService:    newUsersService(repositories),
+		Users:            newUsersSqlService(repositories.Users),
 		IProductsService: productsService,
 		IFilesService:    newFilesService(repositories),
 	}

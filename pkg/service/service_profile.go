@@ -3,11 +3,10 @@ package service
 import (
 	"errors"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/repository"
 )
 
 type ProfileService struct {
-	usersRepo repository.IUsersRepository
+	usersRepo repositories.IUsersRepository
 }
 
 func (s *ProfileService) UpdateProfile(u *models.User, data *models.UserPartial) error {
@@ -18,6 +17,6 @@ func (s *ProfileService) UpdateProfile(u *models.User, data *models.UserPartial)
 	return s.usersRepo.UpdateUser(u, data)
 }
 
-func newProfileService(repositories *repository.Repositories) *ProfileService {
+func newProfileService(repositories *repositories.Repositories) *ProfileService {
 	return &ProfileService{usersRepo: repositories}
 }
