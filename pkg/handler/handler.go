@@ -3,14 +3,13 @@ package handler
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
 )
 
 type Handler struct {
-	services *service.Services
+	services *services.Services
 }
 
-func NewHandler(services *service.Services) *Handler {
+func NewHandler(services *services.Services) *Handler {
 	return &Handler{services: services}
 }
 

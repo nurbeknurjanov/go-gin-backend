@@ -38,7 +38,7 @@ type Files interface {
 
 // agnostic Repositories
 type Repositories struct {
-	Db *sqlx.DB
+	//Db *sqlx.DB
 	Users
 	Products
 	Files
@@ -47,7 +47,7 @@ type Repositories struct {
 // detailed
 func NewSqlRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
-		Db:       db,
+		//Db:       db,
 		Users:    newUsersSqlRepository(db),
 		Products: newProductsSqlRepository(db),
 		Files:    newFilesSqlRepository(db),

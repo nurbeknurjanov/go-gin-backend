@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"errors"
@@ -13,12 +13,10 @@ type UsersService struct {
 	repo repositories.Users
 }
 
-// detailed sql service
-func newUsersSqlService(repo *repositories.UsersSqlRepository) *UsersService {
+func newUsersService(repo repositories.Users) *UsersService {
 	return &UsersService{repo: repo}
 }
 
-// all functions are agnostic despite it's struct, because repo is interface
 func (s *UsersService) Create(m *models.User) error {
 	encryptedPassword, err := helpers.EncryptString(*m.Password)
 	if err != nil {

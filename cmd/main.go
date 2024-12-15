@@ -5,7 +5,6 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
@@ -39,7 +38,7 @@ func main() {
 	}
 
 	repositories := repositories.NewRepositories(db)
-	services := service.NewServices(repositories)
+	services := services.NewServices(repositories)
 	handlers := handler.NewHandler(services)
 
 	server := new(go_backend.Server)

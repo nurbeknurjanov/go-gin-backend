@@ -5,7 +5,6 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/service"
 	"net/http"
 )
 
@@ -33,7 +32,7 @@ func (h *Handler) profileUpdate(c *gin.Context) {
 	u := uData.(*models.User)
 
 	if input.Email != nil {
-		if existedUser, _ := h.services.IUsersService.(*service.UsersService).UsersRepo.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
+		if existedUser, _ := h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*input.Email); existedUser != nil && existedUser.ID != u.ID {
 			newErrorResponse(c, http.StatusBadRequest, validation.Errors{"email": helpers.ErrExistUserEmail})
 			return
 		}
@@ -57,7 +56,7 @@ func (h *Handler) profileChangePassword(c *gin.Context) {
 
 	uData, _ := c.Get(userCtx)
 	u := uData.(*models.User)
-	u, _ = h.services.IUsersService.(*service.UsersService).UsersRepo.FindByEmail(*u.Email)
+	u, _ = h.services.IUsersService.(*services.UsersService).UsersRepo.FindByEmail(*u.Email)
 	if err := u.ValidateCurrentPassword(input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)
 		return

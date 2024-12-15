@@ -1,12 +1,17 @@
-package service
+package services
 
 import (
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/sirupsen/logrus"
 )
 
 type AuthService struct {
-	usersRepo repositories.IUsersRepository
+	usersRepo repositories.Users
+}
+
+func newAuthService(usersRepo repositories.Users) *AuthService {
+	return &AuthService{usersRepo: usersRepo}
 }
 
 func (s *AuthService) Login(email string, password string) (*models.Tokens, error) {
@@ -28,8 +33,4 @@ func (s *AuthService) Login(email string, password string) (*models.Tokens, erro
 
 func (*AuthService) GetAccessToken(u *models.User) (string, error) {
 	return models.GenerateAccessToken(u), nil
-}
-
-func newAuthService(repositories *repositories.Repositories) *AuthService {
-	return &AuthService{usersRepo: repositories}
 }
