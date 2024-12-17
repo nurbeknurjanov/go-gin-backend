@@ -5,13 +5,13 @@ import (
 	"time"
 )
 
-func runChannel(i int, ch chan<- int, closeChannel bool) {
+func runChannel1(i int, ch chan<- int, closeChannel bool) {
 	ch <- i
 	if closeChannel {
 		close(ch)
 	}
 }
-func RunBuffer() {
+func RunLoops() {
 	ch := make(chan int)
 
 	go runChannel(1, ch, true)
