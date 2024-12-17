@@ -19,19 +19,21 @@ package manuals
 	time.Sleep(3 * time.Second)
 }*/
 
-/*func RunTest() {
-	wg := sync.WaitGroup{}
-	for i := 0; i < 10; i++ {
+/*
+func me(i int, wg *sync.WaitGroup) {
+	m["A"] = i
+	fmt.Println(m)
+	wg.Done()
+}
+func RunBuffer() {
+	var wg = sync.WaitGroup{}
+	for i := 0; i < 1000; i++ {
 		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			fmt.Println("out", i)
-		}()
+		go me(i, &wg)
+		wg.Wait()
 	}
-
-	wg.Wait()
-	fmt.Println("all done")
-}*/
+}
+*/
 
 /*func merge(channels ...<-chan int) <-chan int {
 	var mergedChannel = make(chan int)
@@ -73,4 +75,18 @@ func RunTest() {
 		fmt.Println(num)
 	}
 
+}*/
+
+/*var count int64 = 0
+func me() {
+	//count++
+	//atomic.AddInt64(&count, 1)
+	//atomic.StoreInt64(&count, atomic.LoadInt64(&count)+1) //not work
+}
+func RunBuffer() {
+	for i := 0; i < 1000; i++ {
+		go me()
+	}
+	time.Sleep(time.Second * 1)
+	fmt.Println(count)
 }*/

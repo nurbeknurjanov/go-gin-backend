@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/manuals"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/sirupsen/logrus"
@@ -15,6 +16,8 @@ import (
 )
 
 func main() {
+	manuals.RunBuffer()
+	return
 	//logrus.SetLevel(logrus.InfoLevel)
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
