@@ -1,41 +1,33 @@
 package manuals
 
 import (
+	"context"
 	"fmt"
 	"time"
 )
 
-func runChannel(i int, ch chan<- int, closeChannel bool) {
-	ch <- i
-	if closeChannel {
-		close(ch)
+func listenChannels(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("Done")
+			return
+		}
 	}
 }
 func RunBuffer() {
-	ch := make(chan int)
+	root := context.Background()
+	ctxValue := context.WithValue(root, "q", "123123")
+	ctx, cancel := context.WithTimeout(ctxValue, 5*time.Second)
+	stop := context.AfterFunc(ctx, func() {
+		fmt.Println("Before done")
+	})
 
-	go runChannel(1, ch, true)
+	go listenChannels(ctx)
 
-	loop := true
-outerLoop:
-	for loop {
-		time.Sleep(1 * time.Second)
-		select {
-		case i, ok := <-ch:
-			fmt.Println("i->", i)
-			if !ok {
-				ch = nil
-				//loop = false
-				break outerLoop
-			}
-		}
+	_, _ = cancel, stop
+	/*cancel()
+	stop()*/
 
-		if ch == nil {
-			//break
-			//return
-		}
-	}
-
+	fmt.Println("ctx", ctx.Value("q"))
 }
-
-//break works for for i:=0 i<10 i++ too

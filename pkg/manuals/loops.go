@@ -14,7 +14,7 @@ func runChannel1(i int, ch chan<- int, closeChannel bool) {
 func RunLoops() {
 	ch := make(chan int)
 
-	go runChannel(1, ch, true)
+	go runChannel1(1, ch, true)
 
 	loop := true
 outerLoop:
@@ -36,6 +36,7 @@ outerLoop:
 		}
 	}
 
+	fmt.Println("done")
 }
 
 //break works for for i:=0 i<10 i++ too
