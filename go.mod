@@ -3,6 +3,7 @@ module github.com/nurbeknurjanov/go-gin-backend
 go 1.23.0
 
 require (
+	github.com/confluentinc/confluent-kafka-go/v2 v2.6.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0

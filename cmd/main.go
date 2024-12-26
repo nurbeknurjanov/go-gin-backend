@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
+	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/sirupsen/logrus"
@@ -40,7 +41,14 @@ func main() {
 	}
 
 	repo := repositories.NewSqlRepositories(db)
-	s := services.NewServices(repo)
+
+	producer, err := k.NewProducer([]string{os.Getenv("KAFKA1_HOST"), os.Getenv("KAFKA2_HOST"), os.Getenv("KAFKA3_HOST")})
+	if err != nil {
+		logrus.Fatalf("error connecting to kafka nodes : %s", err.Error())
+	}
+
+	s := services.NewServices(repo, producer)
+
 	handlers := handler.NewHandler(s)
 
 	server := new(go_backend.Server)

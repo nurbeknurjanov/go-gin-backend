@@ -1,6 +1,7 @@
 package services
 
 import (
+	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 )
@@ -59,7 +60,7 @@ type Services struct {
 	Mailing
 }
 
-func NewServices(repositories *repositories.Repositories) *Services {
+func NewServices(repositories *repositories.Repositories, producer *k.Producer) *Services {
 	productsService := newProductsService(repositories.Products, repositories.Files)
 
 	rootServices := &Services{
@@ -68,7 +69,7 @@ func NewServices(repositories *repositories.Repositories) *Services {
 		Users:    newUsersService(repositories.Users),
 		Products: productsService,
 		Files:    newFilesService(repositories.Files),
-		Mailing:  newMailingService(),
+		Mailing:  newMailingService(producer),
 	}
 
 	productsService.rootServices = rootServices
