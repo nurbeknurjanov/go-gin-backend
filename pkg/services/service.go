@@ -46,12 +46,17 @@ type Files interface {
 	Find(id string) (*models.File, error)
 }
 
+type Mailing interface {
+	SendRegistrationMessage(*models.User) error
+}
+
 type Services struct {
 	Auth
 	Profile
 	Users
 	Products
 	Files
+	Mailing
 }
 
 func NewServices(repositories *repositories.Repositories) *Services {
@@ -63,6 +68,7 @@ func NewServices(repositories *repositories.Repositories) *Services {
 		Users:    newUsersService(repositories.Users),
 		Products: productsService,
 		Files:    newFilesService(repositories.Files),
+		Mailing:  newMailingService(),
 	}
 
 	productsService.rootServices = rootServices

@@ -34,6 +34,11 @@ func (h *Handler) createUser(c *gin.Context) {
 		return
 	}
 
+	if err := h.services.Mailing.SendRegistrationMessage(input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, input)
 }
 
