@@ -9,6 +9,7 @@ func changeMe(a *A) {
 }
 func changeMe1(a **A) {
 	*a = &A{"Aida"}
+	**a = A{"Aida"} - можно и так
 }
 
 func main() {
@@ -22,3 +23,14 @@ func main() {
 }
 
 */
+
+/*
+//just train
+slice := make([]int, 2, 3)
+slice2 := slice
+slice[1] = 20
+
+slice = append(slice, 100)
+
+fmt.Println(slice) 0 20 100
+fmt.Println(slice2) 0 20*/
