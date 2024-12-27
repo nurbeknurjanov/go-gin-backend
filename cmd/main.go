@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
@@ -63,7 +62,9 @@ func main() {
 		AuthHandler: grpcHandlers.AuthHandler,
 	})
 	go func() {
-		fmt.Println("starting grpc server", grpcServer)
+		if err := grpcServer.ListenAndServer(3002); err != nil {
+			logrus.Fatalf("error starting grpc server: %s", err.Error())
+		}
 	}()
 
 	if err := server.Start(viper.GetString("port"), handler.InitRoutes()); err != nil {

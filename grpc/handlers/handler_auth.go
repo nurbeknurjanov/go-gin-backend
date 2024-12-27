@@ -1,6 +1,7 @@
 package grpc_handlers
 
 import (
+	"context"
 	"fmt"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/nurbeknurjanov/go-grpc/api"
@@ -16,7 +17,7 @@ func NewAuthHandler(authService services.Auth) *AuthHandler {
 	return &AuthHandler{authService: authService}
 }
 
-func (h *AuthHandler) Login(req *api.LoginRequest) (*api.LoginResponse, error) {
+func (h *AuthHandler) Login(ctx context.Context, req *api.LoginRequest) (*api.LoginResponse, error) {
 
 	fmt.Println("api login request", req.Email, req.Password)
 
