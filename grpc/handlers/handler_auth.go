@@ -1,4 +1,4 @@
-package handlers
+package grpc_handlers
 
 import (
 	"fmt"
@@ -9,11 +9,11 @@ import (
 type AuthHandler struct {
 	api.UnimplementedAuthServer
 
-	services *services.Services
+	authService services.Auth
 }
 
-func NewAuthHandler(services *services.Services) *AuthHandler {
-	return &AuthHandler{services: services}
+func NewAuthHandler(authService services.Auth) *AuthHandler {
+	return &AuthHandler{authService: authService}
 }
 
 func (h *AuthHandler) Login(req *api.LoginRequest) (*api.LoginResponse, error) {
@@ -24,6 +24,6 @@ func (h *AuthHandler) Login(req *api.LoginRequest) (*api.LoginResponse, error) {
 		Token: "new generated token",
 	}
 
-	//h.service.Login()
+	//h.authService.Login()
 	return res, nil
 }

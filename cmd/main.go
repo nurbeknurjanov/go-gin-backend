@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
+	"github.com/nurbeknurjanov/go-gin-backend/grpc"
+	grpc_handlers "github.com/nurbeknurjanov/go-gin-backend/grpc/handlers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handlers"
 	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
@@ -52,6 +55,17 @@ func main() {
 	handler := handlers.NewHandler(s)
 
 	server := new(go_backend.Server)
+
+	grpcHandlers := grpc_handlers.NewGrpcHandlers(grpc_handlers.Deps{
+		Auth: s.Auth,
+	})
+	grpcServer := grpc.NewServer(grpc.Deps{
+		AuthHandler: grpcHandlers.AuthHandler,
+	})
+	go func() {
+		fmt.Println("starting grpc server", grpcServer)
+	}()
+
 	if err := server.Start(viper.GetString("port"), handler.InitRoutes()); err != nil {
 		logrus.Fatalf("error starting server: %s", err.Error())
 	}
