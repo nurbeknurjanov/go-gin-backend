@@ -1,4 +1,4 @@
-package handler
+package handlers
 
 import (
 	"github.com/gin-contrib/cors"

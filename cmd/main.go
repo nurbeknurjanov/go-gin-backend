@@ -4,7 +4,6 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
-	"github.com/nurbeknurjanov/go-gin-backend/pkg/handler"
 	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
@@ -49,7 +48,7 @@ func main() {
 
 	s := services.NewServices(repo, producer)
 
-	handler := handler.NewHandler(s)
+	handler := handlers.NewHandler(s)
 
 	server := new(go_backend.Server)
 	if err := server.Start(viper.GetString("port"), handler.InitRoutes()); err != nil {
