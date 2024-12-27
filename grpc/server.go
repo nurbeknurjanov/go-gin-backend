@@ -8,7 +8,7 @@ import (
 )
 
 type Deps struct {
-	UserHandler api.AuthServer
+	AuthHandler api.AuthServer
 }
 type Server struct {
 	srv *grpc.Server
@@ -29,7 +29,7 @@ func (s *Server) ListenAndServer(port int) error {
 		return err
 	}
 
-	api.RegisterAuthServer(s.srv, s.UserHandler)
+	api.RegisterAuthServer(s.srv, s.AuthHandler)
 
 	if err := s.srv.Serve(listenTCP); err != nil {
 		return err

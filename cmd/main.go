@@ -4,6 +4,7 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	go_backend "github.com/nurbeknurjanov/go-gin-backend"
+	"github.com/nurbeknurjanov/go-gin-backend/pkg/handlers"
 	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
