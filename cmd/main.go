@@ -49,10 +49,10 @@ func main() {
 
 	s := services.NewServices(repo, producer)
 
-	handlers := handler.NewHandler(s)
+	handler := handler.NewHandler(s)
 
 	server := new(go_backend.Server)
-	if err := server.Start(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+	if err := server.Start(viper.GetString("port"), handler.InitRoutes()); err != nil {
 		logrus.Fatalf("error starting server: %s", err.Error())
 	}
 }
