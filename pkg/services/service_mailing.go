@@ -20,6 +20,7 @@ func newMailingService(producer *kafka.Producer) *MailingService {
 }
 
 func (m *MailingService) SendRegistrationMessage(u *models.User) error {
+	return nil
 	messageRegistration := strings.Replace(templateRegistration, "{name}", *u.Name, -1)
 	return m.producer.Produce(messageRegistration, topicRegistration, nil)
 }

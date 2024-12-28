@@ -7,7 +7,6 @@ import (
 	"github.com/nurbeknurjanov/go-gin-backend/grpc"
 	grpc_handlers "github.com/nurbeknurjanov/go-gin-backend/grpc/handlers"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/handlers"
-	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/sirupsen/logrus"
@@ -44,12 +43,12 @@ func main() {
 
 	repo := repositories.NewSqlRepositories(db)
 
-	producer, err := k.NewProducer([]string{os.Getenv("KAFKA1_HOST"), os.Getenv("KAFKA2_HOST"), os.Getenv("KAFKA3_HOST")})
+	/*producer, err := k.NewProducer([]string{os.Getenv("KAFKA1_HOST"), os.Getenv("KAFKA2_HOST"), os.Getenv("KAFKA3_HOST")})
 	if err != nil {
 		logrus.Fatalf("error connecting to kafka nodes : %s", err.Error())
-	}
+	}*/
 
-	s := services.NewServices(repo, producer)
+	s := services.NewServices(repo, nil)
 
 	handler := handlers.NewHandler(s)
 

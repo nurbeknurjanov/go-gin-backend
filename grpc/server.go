@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"fmt"
-	api "github.com/nurbeknurjanov/go-grpc/api"
+	"github.com/nurbeknurjanov/go-grpc/api"
 	"google.golang.org/grpc"
 	"net"
 )
