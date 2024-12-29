@@ -18,8 +18,8 @@ import (
 // @ID createUser
 // @Accept json
 // @Produce json
-// @Param inputBody body models.User true "create user params"
-// @Success 200 {object} models.User
+// @Param inputBody body models.UserWithPassword true "create user params"
+// @Success 200 {object} models.UserWithPassword
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Failure default {object} ErrorResponse

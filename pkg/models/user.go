@@ -1,7 +1,6 @@
 package models
 
 import (
-	"encoding/json"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
@@ -26,7 +25,7 @@ const (
 type User struct {
 	ID       *int    `json:"id" swaggerignore:"true"`
 	Email    *string `json:"email"`
-	Password *string `json:"password,omitempty"`
+	Password *string `json:"password,omitempty" swaggerignore:"true"`
 	//Password string     `json:"-"`
 	Name      *string     `json:"name"`
 	Age       *int        `json:"age"`
@@ -37,18 +36,22 @@ type User struct {
 	//Status StatusType `json:"status" binding:"required"`
 }
 
-/*
-	func (u *User) MarshalJSON() ([]byte, error) {
-		return json.Marshal(struct {
-			ID   int    `json:"id"`
-			Name string `json:"name"`
-		}{
-			ID:   *u.ID,
-			Name: *u.Name,
-		})
-	}
-*/
-func (u *User) UnmarshalJSON(data []byte) error {
+type UserWithPassword struct {
+	User
+	Password *string `json:"password"`
+}
+
+/*func (u *User) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	}{
+		ID:   *u.ID,
+		Name: *u.Name,
+	})
+}*/
+
+/*func (u *User) UnmarshalJSON(data []byte) error {
 	type Alias User
 	var temp struct {
 		Alias
@@ -60,8 +63,9 @@ func (u *User) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	//some logic
 	return nil
-}
+}*/
 
 type UserPartial User
 

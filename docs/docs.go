@@ -239,7 +239,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UserWithPassword"
                         }
                     }
                 ],
@@ -247,7 +247,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UserWithPassword"
                         }
                     },
                     "400": {
@@ -414,6 +414,27 @@ const docTemplate = `{
             }
         },
         "models.User": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Password string     ` + "`" + `json:\"-\"` + "`" + `",
+                    "type": "string"
+                },
+                "sex": {
+                    "$ref": "#/definitions/models.SexType"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.StatusType"
+                }
+            }
+        },
+        "models.UserWithPassword": {
             "type": "object",
             "properties": {
                 "age": {
