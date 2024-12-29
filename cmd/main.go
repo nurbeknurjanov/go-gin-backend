@@ -23,7 +23,7 @@ import (
 // @host localhost:3001
 // @BasePath /
 
-// @securityDefinitions.accessTokenHeaderName AccessTokenHeaderName
+// @securityDefinitions.apiKey AccessTokenHeaderName
 // @in header
 // @name X-Access-Token
 

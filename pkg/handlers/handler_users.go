@@ -12,6 +12,7 @@ import (
 )
 
 // @Summary CreateUser
+// @Security AccessTokenHeaderName
 // @Tags users
 // @Description Create user
 // @ID createUser

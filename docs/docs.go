@@ -135,6 +135,11 @@ const docTemplate = `{
         },
         "/users": {
             "post": {
+                "security": [
+                    {
+                        "AccessTokenHeaderName": []
+                    }
+                ],
                 "description": "Create user",
                 "consumes": [
                     "application/json"
@@ -278,6 +283,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "AccessTokenHeaderName": {
+            "type": "apiKey",
+            "name": "X-Access-Token",
+            "in": "header"
         }
     }
 }`

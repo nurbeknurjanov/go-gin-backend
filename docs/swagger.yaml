@@ -179,7 +179,14 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - AccessTokenHeaderName: []
       summary: CreateUser
       tags:
       - users
+securityDefinitions:
+  AccessTokenHeaderName:
+    in: header
+    name: X-Access-Token
+    type: apiKey
 swagger: "2.0"
