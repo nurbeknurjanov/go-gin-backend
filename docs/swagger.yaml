@@ -251,6 +251,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.User'
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

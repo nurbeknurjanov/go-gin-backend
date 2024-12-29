@@ -63,6 +63,7 @@ func (h *Handler) createUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param inputBody body models.User true "update user params"
+// @Param id path integer true "User ID"
 // @Success 200 {object} models.User
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
