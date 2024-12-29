@@ -11,6 +11,18 @@ import (
 	"strconv"
 )
 
+// @Summary CreateUser
+// @Tags users
+// @Description Create user
+// @ID createUser
+// @Accept json
+// @Produce json
+// @Param inputBody body models.User true "create user params"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Failure default {object} ErrorResponse
+// @Router /users [post]
 func (h *Handler) createUser(c *gin.Context) {
 	var input *models.User
 

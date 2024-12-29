@@ -10,7 +10,7 @@ import (
 // @Summary Login
 // @Tags auth
 // @Description Authorize
-// @ID authorize
+// @ID login
 // @Accept json
 // @Produce json
 // @Param inputBody body models.LoginRequest true "login params"
@@ -20,10 +20,6 @@ import (
 // @Failure default {object} ErrorResponse
 // @Router /auth/login [post]
 func (h *Handler) login(c *gin.Context) {
-	/*var input struct {
-		Email    string
-		Password string
-	}*/
 	input := models.LoginRequest{}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -40,6 +36,18 @@ func (h *Handler) login(c *gin.Context) {
 	c.JSON(http.StatusOK, tokens)
 }
 
+// @Summary GetAccessToken
+// @Tags auth
+// @Description Get access token
+// @ID getAccessToken
+// @Accept json
+// @Produce json
+// @Param inputBody body models.LoginRequest true "login params"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Failure default {object} ErrorResponse
+// @Router /auth/get-access-token [get]
 func (h *Handler) getAccessToken(c *gin.Context) {
 	uData, _ := c.Get(userCtx)
 	token, err := h.services.Auth.GetAccessToken(uData.(*models.User))

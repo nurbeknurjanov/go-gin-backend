@@ -9,6 +9,65 @@
     "host": "localhost:3001",
     "basePath": "/",
     "paths": {
+        "/auth/get-access-token": {
+            "get": {
+                "description": "Get access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "GetAccessToken",
+                "operationId": "getAccessToken",
+                "parameters": [
+                    {
+                        "description": "login params",
+                        "name": "inputBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Authorize",
@@ -22,7 +81,7 @@
                     "auth"
                 ],
                 "summary": "Login",
-                "operationId": "authorize",
+                "operationId": "login",
                 "parameters": [
                     {
                         "description": "login params",
@@ -31,6 +90,65 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/models.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "description": "Create user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "CreateUser",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "description": "create user params",
+                        "name": "inputBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
                         }
                     }
                 ],
@@ -94,6 +212,63 @@
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SexType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "_",
+                "SEX_MALE",
+                "SEX_FEMALE"
+            ]
+        },
+        "models.StatusType": {
+            "type": "string",
+            "enum": [
+                "1",
+                "0"
+            ],
+            "x-enum-varnames": [
+                "STATUS_ENABLED",
+                "STATUS_DISABLED"
+            ]
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Password string     `json:\"-\"`",
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "sex": {
+                    "$ref": "#/definitions/models.SexType"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.StatusType"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }

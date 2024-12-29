@@ -18,6 +18,46 @@ definitions:
       password:
         type: string
     type: object
+  models.SexType:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - _
+    - SEX_MALE
+    - SEX_FEMALE
+  models.StatusType:
+    enum:
+    - "1"
+    - "0"
+    type: string
+    x-enum-varnames:
+    - STATUS_ENABLED
+    - STATUS_DISABLED
+  models.User:
+    properties:
+      age:
+        type: integer
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        description: Password string     `json:"-"`
+        type: string
+      password:
+        type: string
+      sex:
+        $ref: '#/definitions/models.SexType'
+      status:
+        $ref: '#/definitions/models.StatusType'
+      updatedAt:
+        type: string
+    type: object
 host: localhost:3001
 info:
   contact: {}
@@ -25,12 +65,51 @@ info:
   title: CRUD App API
   version: "1.0"
 paths:
+  /auth/get-access-token:
+    get:
+      consumes:
+      - application/json
+      description: Get access token
+      operationId: getAccessToken
+      parameters:
+      - description: login params
+        in: body
+        name: inputBody
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: GetAccessToken
+      tags:
+      - auth
   /auth/login:
     post:
       consumes:
       - application/json
       description: Authorize
-      operationId: authorize
+      operationId: login
       parameters:
       - description: login params
         in: body
@@ -64,4 +143,43 @@ paths:
       summary: Login
       tags:
       - auth
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      operationId: createUser
+      parameters:
+      - description: create user params
+        in: body
+        name: inputBody
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: CreateUser
+      tags:
+      - users
 swagger: "2.0"
