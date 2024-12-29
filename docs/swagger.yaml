@@ -1,9 +1,40 @@
 basePath: /
+definitions:
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
 host: localhost:3001
 info:
   contact: {}
   description: API Server for CRUD Application
   title: CRUD App API
   version: "1.0"
-paths: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authorize
+      operationId: authorize
+      parameters:
+      - description: login params
+        in: body
+        name: inputBody
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: Login
+      tags:
+      - auth
 swagger: "2.0"

@@ -2,8 +2,13 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/jmoiron/sqlx"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
+)
+
+var (
+	errRecordNotFound = errors.New("The record is not found")
 )
 
 type Users interface {

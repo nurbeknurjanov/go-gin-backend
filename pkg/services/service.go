@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	k "github.com/nurbeknurjanov/go-gin-backend/pkg/kafka"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/models"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/repositories"
@@ -8,6 +9,10 @@ import (
 
 const (
 	adminEmail = "nurbek.nurjanov@mail.ru"
+)
+
+var (
+	errLogin = errors.New("Incorrect email or password")
 )
 
 type Auth interface {

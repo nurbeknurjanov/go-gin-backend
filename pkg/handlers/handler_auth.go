@@ -7,15 +7,21 @@ import (
 	"net/http"
 )
 
+// @Summary Login
+// @Tags auth
+// @Description Authorize
+// @ID authorize
+// @Accept json
+// @Produce json
+// @Param inputBody body models.LoginRequest true "login params"
+// @Success 200 {integer} integer 1
+// @Router /auth/login [post]
 func (h *Handler) login(c *gin.Context) {
 	/*var input struct {
 		Email    string
 		Password string
 	}*/
-	input := struct {
-		Email    string
-		Password string
-	}{}
+	input := models.LoginRequest{}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err)

@@ -1,12 +1,17 @@
 package handlers
 
 import (
+	"errors"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/nurbeknurjanov/go-gin-backend/docs"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
 	"github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+var (
+	errNotAuthorized = errors.New("Not authorized")
 )
 
 type Handler struct {

@@ -16,4 +16,8 @@ migrate-up:
 migrate-down:
 	migrate -path ./schema -database $(DB_CONNECT) down
 
+.PHONY: swag
+swag:
+	swag init -g cmd/main.go
+
 .DEFAULT_GOAL := up
