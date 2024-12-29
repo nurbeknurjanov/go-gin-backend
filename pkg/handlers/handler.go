@@ -3,7 +3,10 @@ package handlers
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	_ "github.com/nurbeknurjanov/go-gin-backend/docs"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/services"
+	"github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Handler struct {
@@ -18,6 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	router.StaticFS("/public", gin.Dir("public/upload", false))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{"*"}

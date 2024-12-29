@@ -16,6 +16,17 @@ import (
 	"runtime"
 )
 
+// @title CRUD App API
+// @version 1.0
+// @description API Server for CRUD Application
+
+// @host localhost:3001
+// @BasePath /
+
+// @securityDefinitions.accessTokenHeaderName AccessTokenHeaderName
+// @in header
+// @name X-Access-Token
+
 func main() {
 	//logrus.SetLevel(logrus.InfoLevel)
 	logrus.SetFormatter(new(logrus.JSONFormatter))

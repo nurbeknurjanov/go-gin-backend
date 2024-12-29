@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:3001
+info:
+  contact: {}
+  description: API Server for CRUD Application
+  title: CRUD App API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

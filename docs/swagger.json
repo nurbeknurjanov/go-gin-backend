@@ -1,0 +1,12 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API Server for CRUD Application",
+        "title": "CRUD App API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3001",
+    "basePath": "/",
+    "paths": {}
+}
