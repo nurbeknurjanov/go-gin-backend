@@ -15,6 +15,9 @@ import (
 // @Produce json
 // @Param inputBody body models.LoginRequest true "login params"
 // @Success 200 {integer} integer 1
+// @Failure 400,404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Failure default {object} ErrorResponse
 // @Router /auth/login [post]
 func (h *Handler) login(c *gin.Context) {
 	/*var input struct {

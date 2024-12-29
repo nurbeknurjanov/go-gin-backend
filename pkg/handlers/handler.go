@@ -12,6 +12,8 @@ import (
 
 var (
 	errNotAuthorized = errors.New("Not authorized")
+	errBadRequest    = errors.New("Bad request")
+	errServer        = errors.New("Internal server error")
 )
 
 type Handler struct {
