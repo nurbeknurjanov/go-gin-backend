@@ -50,12 +50,15 @@ definitions:
       email:
         type: string
       name:
-        description: Password string     `json:"-"`
         type: string
       sex:
-        $ref: '#/definitions/models.SexType'
+        allOf:
+        - $ref: '#/definitions/models.SexType'
+        description: ENUM 1=Male, 2=Female
       status:
-        $ref: '#/definitions/models.StatusType'
+        allOf:
+        - $ref: '#/definitions/models.StatusType'
+        description: ENUM "1"=Enabled, "0"=Disabled
     type: object
   models.UserWithPassword:
     properties:
@@ -64,14 +67,17 @@ definitions:
       email:
         type: string
       name:
-        description: Password string     `json:"-"`
         type: string
       password:
         type: string
       sex:
-        $ref: '#/definitions/models.SexType'
+        allOf:
+        - $ref: '#/definitions/models.SexType'
+        description: ENUM 1=Male, 2=Female
       status:
-        $ref: '#/definitions/models.StatusType'
+        allOf:
+        - $ref: '#/definitions/models.StatusType'
+        description: ENUM "1"=Enabled, "0"=Disabled
     type: object
 host: localhost:3001
 info:

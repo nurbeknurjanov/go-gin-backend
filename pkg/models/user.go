@@ -25,15 +25,15 @@ const (
 type User struct {
 	ID       *int    `json:"id" swaggerignore:"true"`
 	Email    *string `json:"email"`
-	Password *string `json:"password,omitempty" swaggerignore:"true"`
-	//Password string     `json:"-"`
-	Name      *string     `json:"name"`
-	Age       *int        `json:"age"`
-	Sex       *SexType    `json:"sex"`
-	Status    *StatusType `json:"status"`
+	Password *string `json:"password,omitempty" swaggerignore:"true"` //Password string     `json:"-"`
+	Name     *string `json:"name"`
+	Age      *int    `json:"age"`
+	// ENUM 1=Male, 2=Female
+	Sex *SexType `json:"sex"`
+	// ENUM "1"=Enabled, "0"=Disabled
+	Status    *StatusType `json:"status"` //Status StatusType `json:"status" binding:"required"`
 	CreatedAt *string     `json:"createdAt" swaggerignore:"true"`
 	UpdatedAt *string     `json:"updatedAt" swaggerignore:"true"`
-	//Status StatusType `json:"status" binding:"required"`
 }
 
 type UserWithPassword struct {

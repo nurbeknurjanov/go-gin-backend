@@ -423,14 +423,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "description": "Password string     ` + "`" + `json:\"-\"` + "`" + `",
                     "type": "string"
                 },
                 "sex": {
-                    "$ref": "#/definitions/models.SexType"
+                    "description": "ENUM 1=Male, 2=Female",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.SexType"
+                        }
+                    ]
                 },
                 "status": {
-                    "$ref": "#/definitions/models.StatusType"
+                    "description": "ENUM \"1\"=Enabled, \"0\"=Disabled",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.StatusType"
+                        }
+                    ]
                 }
             }
         },
@@ -444,17 +453,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
-                    "description": "Password string     ` + "`" + `json:\"-\"` + "`" + `",
                     "type": "string"
                 },
                 "password": {
                     "type": "string"
                 },
                 "sex": {
-                    "$ref": "#/definitions/models.SexType"
+                    "description": "ENUM 1=Male, 2=Female",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.SexType"
+                        }
+                    ]
                 },
                 "status": {
-                    "$ref": "#/definitions/models.StatusType"
+                    "description": "ENUM \"1\"=Enabled, \"0\"=Disabled",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.StatusType"
+                        }
+                    ]
                 }
             }
         }
