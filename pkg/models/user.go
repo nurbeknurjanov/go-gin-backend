@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/nurbeknurjanov/go-gin-backend/pkg/helpers"
@@ -34,6 +35,32 @@ type User struct {
 	CreatedAt *string     `json:"createdAt" swaggerignore:"true"`
 	UpdatedAt *string     `json:"updatedAt" swaggerignore:"true"`
 	//Status StatusType `json:"status" binding:"required"`
+}
+
+/*
+	func (u *User) MarshalJSON() ([]byte, error) {
+		return json.Marshal(struct {
+			ID   int    `json:"id"`
+			Name string `json:"name"`
+		}{
+			ID:   *u.ID,
+			Name: *u.Name,
+		})
+	}
+*/
+func (u *User) UnmarshalJSON(data []byte) error {
+	type Alias User
+	var temp struct {
+		Alias
+		End string `json:"end"` // Custom processing field
+	}
+
+	// Unmarshal into the temporary struct
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 type UserPartial User
