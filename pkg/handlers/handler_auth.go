@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param inputBody body models.LoginRequest true "login params"
-// @Success 200 {integer} integer 1
+// @Success 200 {object} models.Tokens
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Failure default {object} ErrorResponse
@@ -43,7 +43,7 @@ func (h *Handler) login(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param inputBody body models.LoginRequest true "login params"
-// @Success 200 {integer} integer 1
+// @Success 200 {string} string
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Failure default {object} ErrorResponse

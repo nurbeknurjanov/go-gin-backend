@@ -19,7 +19,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param inputBody body models.User true "create user params"
-// @Success 200 {integer} integer 1
+// @Success 200 {object} models.User
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Failure default {object} ErrorResponse
@@ -55,6 +55,19 @@ func (h *Handler) createUser(c *gin.Context) {
 	c.JSON(http.StatusOK, input)
 }
 
+// @Summary UpdateUser
+// @Security AccessTokenHeaderName
+// @Tags users
+// @Description Update user
+// @ID updateUser
+// @Accept json
+// @Produce json
+// @Param inputBody body models.User true "update user params"
+// @Success 200 {object} models.User
+// @Failure 400,404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Failure default {object} ErrorResponse
+// @Router /users/{id} [put]
 func (h *Handler) updateUser(c *gin.Context) {
 	var input *models.UserPartial
 
@@ -105,6 +118,20 @@ func (h *Handler) viewUser(c *gin.Context) {
 	c.JSON(http.StatusOK, u)
 }
 
+// @Summary ListUsers
+// @Security AccessTokenHeaderName
+// @Tags users
+// @Description List users
+// @ID listUsers
+// @Accept json
+// @Produce json
+// @Param pageNumber query integer false "Page number" example(0)
+// @Param pageSize query integer false "Page size" example(12)
+// @Success 200 {array} models.User
+// @Failure 400,404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Failure default {object} ErrorResponse
+// @Router /users [get]
 func (h *Handler) listUsers(c *gin.Context) {
 	pageNumber, _ := strconv.Atoi(c.DefaultQuery("pageNumber", "0"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "12"))

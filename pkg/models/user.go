@@ -23,16 +23,16 @@ const (
 )
 
 type User struct {
-	ID       *int    `json:"id"`
+	ID       *int    `json:"id" swaggerignore:"true"`
 	Email    *string `json:"email"`
 	Password *string `json:"password,omitempty"`
 	//Password string     `json:"-"`
 	Name      *string     `json:"name"`
 	Age       *int        `json:"age"`
-	Sex       *SexType    `json:"sex"`
+	Sex       *SexType    `json:"sex" swagger:"enum=1|2"`
 	Status    *StatusType `json:"status"`
-	CreatedAt *string     `json:"createdAt"`
-	UpdatedAt *string     `json:"updatedAt"`
+	CreatedAt *string     `json:"createdAt" swaggerignore:"true"`
+	UpdatedAt *string     `json:"updatedAt" swaggerignore:"true"`
 	//Status StatusType `json:"status" binding:"required"`
 }
 

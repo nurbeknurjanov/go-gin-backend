@@ -36,16 +36,19 @@ definitions:
     x-enum-varnames:
     - STATUS_ENABLED
     - STATUS_DISABLED
+  models.Tokens:
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
   models.User:
     properties:
       age:
         type: integer
-      createdAt:
-        type: string
       email:
         type: string
-      id:
-        type: integer
       name:
         description: Password string     `json:"-"`
         type: string
@@ -55,8 +58,6 @@ definitions:
         $ref: '#/definitions/models.SexType'
       status:
         $ref: '#/definitions/models.StatusType'
-      updatedAt:
-        type: string
     type: object
 host: localhost:3001
 info:
@@ -84,7 +85,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: integer
+            type: string
         "400":
           description: Bad Request
           schema:
@@ -123,7 +124,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: integer
+            $ref: '#/definitions/models.Tokens'
         "400":
           description: Bad Request
           schema:
@@ -144,6 +145,52 @@ paths:
       tags:
       - auth
   /users:
+    get:
+      consumes:
+      - application/json
+      description: List users
+      operationId: listUsers
+      parameters:
+      - description: Page number
+        example: 0
+        in: query
+        name: pageNumber
+        type: integer
+      - description: Page size
+        example: 12
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - AccessTokenHeaderName: []
+      summary: ListUsers
+      tags:
+      - users
     post:
       consumes:
       - application/json
@@ -162,7 +209,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: integer
+            $ref: '#/definitions/models.User'
         "400":
           description: Bad Request
           schema:
@@ -182,6 +229,47 @@ paths:
       security:
       - AccessTokenHeaderName: []
       summary: CreateUser
+      tags:
+      - users
+  /users/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update user
+      operationId: updateUser
+      parameters:
+      - description: update user params
+        in: body
+        name: inputBody
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - AccessTokenHeaderName: []
+      summary: UpdateUser
       tags:
       - users
 securityDefinitions:
