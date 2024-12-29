@@ -29,7 +29,7 @@ type User struct {
 	//Password string     `json:"-"`
 	Name      *string     `json:"name"`
 	Age       *int        `json:"age"`
-	Sex       *SexType    `json:"sex" swagger:"enum=1|2"`
+	Sex       *SexType    `json:"sex"`
 	Status    *StatusType `json:"status"`
 	CreatedAt *string     `json:"createdAt" swaggerignore:"true"`
 	UpdatedAt *string     `json:"updatedAt" swaggerignore:"true"`

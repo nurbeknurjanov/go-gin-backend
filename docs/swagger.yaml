@@ -161,6 +161,13 @@ paths:
         in: query
         name: pageSize
         type: integer
+      - description: Sex(Male=1, Female=2)
+        enum:
+        - 1
+        - 2
+        in: query
+        name: sex
+        type: integer
       produces:
       - application/json
       responses:

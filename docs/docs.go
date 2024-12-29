@@ -166,6 +166,16 @@ const docTemplate = `{
                         "description": "Page size",
                         "name": "pageSize",
                         "in": "query"
+                    },
+                    {
+                        "enum": [
+                            1,
+                            2
+                        ],
+                        "type": "integer",
+                        "description": "Sex(Male=1, Female=2)",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
