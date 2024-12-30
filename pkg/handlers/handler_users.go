@@ -126,9 +126,9 @@ func (h *Handler) viewUser(c *gin.Context) {
 // @ID listUsers
 // @Accept json
 // @Produce json
-// @Param pageNumber query integer false "Page number" example(0)
-// @Param pageSize query integer false "Page size" example(12)
-// @Param sex query int false "Sex(Male=1, Female=2)" Enums(1, 2)
+// @Param   pageNumber query int false "Page number" example(0)
+// @Param   pageSize   query int false "Page size" example(12)
+// @Param   sex        query int false "Sex(Male=1, Female=2)" Enums(1, 2)
 // @Success 200 {array} models.User
 // @Failure 400,404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
